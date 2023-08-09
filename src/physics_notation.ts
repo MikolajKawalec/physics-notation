@@ -1,4 +1,5 @@
 import { commonUnits } from './common_units';
+import { siPrefixes } from './si_prefixes';
 
 export type Unit<T> = [T, T, T, T, T, T, T];
 
@@ -15,6 +16,27 @@ export const Base_Units: Unit<string> = [
 	'amount of substance(mol)',
 	'luminous intensity(cd)',
 ];
+
+export const Base_SI_Prefixes: Array<string> = [
+	's',
+	'm',
+	'g',
+	'A',
+	'K',
+	'mol',
+	'cd',
+];
+
+export class UnitsMismatchError extends Error {
+	constructor() {
+		super();
+		Object.setPrototypeOf(this, UnitsMismatchError.prototype);
+	}
+
+	getErrorMessage() {
+		return 'Something went wrong Cannot perform operation with mismatching units';
+	}
+}
 
 export class PhysicsVariable {
 	protected value: number;
@@ -101,13 +123,54 @@ export class PhysicsVariable {
 		return retStr;
 	}
 
-	public toVerboseString(bForceSI?: boolean): string {
-		let retStr = this.value.toString();
-		let commonUnit = commonUnits.get(this.unit);
-		console.log(commonUnit);
-		if (bForceSI || !commonUnit) {
-		} else {
+	public getUnitString(): string {
+		let retStr: string = '';
+		for (let i = 0; i < this.unit.length; i++) {
+			if (i === this.unit.length - 1) {
+				retStr += this.unit[i].toString();
+			} else {
+				retStr += this.unit[i].toString() + ',';
+			}
 		}
 		return retStr;
+	}
+
+	public toVerboseString(bForceSI?: boolean): string {
+		let retStr = this.value.toString();
+		let siPrefix = siPrefixes.get(this.prefix);
+		if (this.prefix !== 0) {
+			if (siPrefix) {
+				retStr += siPrefix;
+			} else {
+				retStr += '*10^' + this.prefix.toString();
+			}
+		}
+		let commonUnit = commonUnits.get(this.getUnitString());
+		if (bForceSI || !commonUnit) {
+			for (let i = 0; i < this.unit.length; i++) {
+				if (this.unit[i] !== 0) {
+					if (this.unit[i] === 1) {
+						retStr += Base_SI_Prefixes[i];
+					} else {
+						retStr += Base_SI_Prefixes[i] + '^(' + this.unit[i] + ')';
+					}
+				}
+			}
+		} else {
+			retStr += commonUnit;
+		}
+		return retStr;
+	}
+
+	public convertValueToBase(desiredBase: number): number {
+		return this.value / (10 ^ (desiredBase - this.prefix));
+	}
+
+	public Add(b: PhysicsVariable): PhysicsVariable {
+		//typechecks first
+		if (this.getUnitString() !== b.getUnitString()) {
+			throw new UnitsMismatchError();
+		}
+		//convert to common base and prefix aka of the first
 	}
 }

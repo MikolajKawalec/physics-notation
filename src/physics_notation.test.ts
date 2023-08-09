@@ -14,6 +14,8 @@ test('Create 21.37 km (from string)', () => {
 	expect(pv.getValue()).toEqual(21.37);
 	expect(pv.getPrefix()).toEqual(3);
 	expect(pv.getUnit()).toMatchObject([0, 1, 0, 0, 0, 0, 0]);
+	expect(pv.toVerboseString()).toEqual('21.37km');
+	expect(pv.getUnitString()).toEqual('0,1,0,0,0,0,0');
 });
 
 test('Create 21.37 km (from values)', () => {
@@ -22,4 +24,16 @@ test('Create 21.37 km (from values)', () => {
 	expect(pv.getValue()).toEqual(21.37);
 	expect(pv.getPrefix()).toEqual(3);
 	expect(pv.getUnit()).toMatchObject([0, 1, 0, 0, 0, 0, 0]);
+	expect(pv.toVerboseString()).toEqual('21.37km');
+	expect(pv.getUnitString()).toEqual('0,1,0,0,0,0,0');
+});
+
+test('Create 10 MJ', () => {
+	let pv = PhysicsVariable.fromString('10,6,-2,2,1,0,0,0,0');
+	expect(pv.toString()).toEqual('10,6,-2,2,1,0,0,0,0');
+	expect(pv.getValue()).toEqual(10);
+	expect(pv.getPrefix()).toEqual(6);
+	expect(pv.getUnit()).toMatchObject([-2, 2, 1, 0, 0, 0, 0]);
+	expect(pv.toVerboseString()).toEqual('10MJ');
+	expect(pv.getUnitString()).toEqual('-2,2,1,0,0,0,0');
 });

@@ -163,7 +163,17 @@ export class PhysicsVariable {
 	}
 
 	public convertValueToBase(desiredBase: number): number {
-		return this.value / (10 ^ (desiredBase - this.prefix));
+		if (this.prefix === desiredBase) {
+			return this.value;
+		}
+		let diffrence = this.prefix - desiredBase;
+		if (diffrence >= 0) {
+			//string move to the right
+			return this.value * (10 ^ diffrence);
+		} else {
+			//string move to the left
+			return this.value / (10 ^ diffrence);
+		}
 	}
 
 	public Add(b: PhysicsVariable): PhysicsVariable {
@@ -172,5 +182,6 @@ export class PhysicsVariable {
 			throw new UnitsMismatchError();
 		}
 		//convert to common base and prefix aka of the first
+		return new PhysicsVariable();
 	}
 }

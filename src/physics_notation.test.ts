@@ -37,3 +37,13 @@ test('Create 10 MJ', () => {
 	expect(pv.toVerboseString()).toEqual('10MJ');
 	expect(pv.getUnitString()).toEqual('-2,2,1,0,0,0,0');
 });
+
+test('Converts 10 kJ to J', () => {
+	let pv = PhysicsVariable.fromString('10,3,-2,2,1,0,0,0,0');
+	expect(pv.convertValueToBase(0)).toEqual(10000);
+});
+
+test('Converts 10,000 J to kJ', () => {
+	let pv = PhysicsVariable.fromString('10000,0,-2,2,1,0,0,0,0');
+	expect(pv.convertValueToBase(3)).toEqual(10);
+});

@@ -7,6 +7,15 @@ export function getEmptyUnit(): Unit<number> {
 	return [0, 0, 0, 0, 0, 0, 0];
 }
 
+export function IsKilogram(unit: Unit<number>): boolean {
+	let kg = [0, 0, 1, 0, 0, 0, 0];
+	let checkUnit = [...unit];
+	for (let i = 0; i < kg.length; i++) {
+		checkUnit[i] = checkUnit[i] - kg[i];
+	}
+	return checkUnit.toString() === getEmptyUnit().toString();
+}
+
 export const Base_Units: Unit<string> = [
 	'time(s)',
 	'length(m)',
@@ -20,7 +29,7 @@ export const Base_Units: Unit<string> = [
 export const Base_SI_Prefixes: Array<string> = [
 	's',
 	'm',
-	'g',
+	'kg',
 	'A',
 	'K',
 	'mol',
@@ -35,6 +44,17 @@ export class UnitsMismatchError extends Error {
 
 	getErrorMessage() {
 		return 'Something went wrong Cannot perform operation with mismatching units';
+	}
+}
+
+export class UnitInExponent extends Error {
+	constructor() {
+		super();
+		Object.setPrototypeOf(this, UnitInExponent.prototype);
+	}
+
+	getErrorMessage() {
+		return 'Something went wrong Cannot perform operation with nonzero unit in the exponent';
 	}
 }
 
@@ -137,14 +157,17 @@ export class PhysicsVariable {
 
 	public toVerboseString(bForceSI?: boolean): string {
 		let retStr = this.value.toString();
-		let siPrefix = siPrefixes.get(this.prefix);
-		if (this.prefix !== 0) {
-			if (siPrefix) {
-				retStr += siPrefix;
-			} else {
-				retStr += '*10^' + this.prefix.toString();
+		if (!this.IsEmptyUnit()) {
+			let siPrefix = siPrefixes.get(this.prefix);
+			if (this.prefix !== 0) {
+				if (siPrefix) {
+					retStr += siPrefix;
+				} else {
+					retStr += '*10^' + this.prefix.toString();
+				}
 			}
 		}
+
 		let commonUnit = commonUnits.get(this.getUnitString());
 		if (bForceSI || !commonUnit) {
 			for (let i = 0; i < this.unit.length; i++) {
@@ -168,11 +191,9 @@ export class PhysicsVariable {
 		}
 		let diffrence = this.prefix - desiredBase;
 		if (diffrence >= 0) {
-			//string move to the right
-			return this.value * (10 ^ diffrence);
+			return this.value * Math.pow(10, diffrence);
 		} else {
-			//string move to the left
-			return this.value / (10 ^ diffrence);
+			return this.value / Math.pow(10, Math.abs(diffrence));
 		}
 	}
 
@@ -181,7 +202,129 @@ export class PhysicsVariable {
 		if (this.getUnitString() !== b.getUnitString()) {
 			throw new UnitsMismatchError();
 		}
-		//convert to common base and prefix aka of the first
-		return new PhysicsVariable();
+		let valueB = b.convertValueToBase(this.prefix);
+		return PhysicsVariable.fromValues(
+			this.value + valueB,
+			this.prefix,
+			this.unit
+		);
+	}
+
+	public Substract(b: PhysicsVariable): PhysicsVariable {
+		//typechecks first
+		if (this.getUnitString() !== b.getUnitString()) {
+			throw new UnitsMismatchError();
+		}
+		let valueB = b.convertValueToBase(this.prefix);
+		return PhysicsVariable.fromValues(
+			this.value - valueB,
+			this.prefix,
+			this.unit
+		);
+	}
+
+	public Multiply(b: PhysicsVariable): PhysicsVariable {
+		//common base
+		let valueB = b.convertValueToBase(this.prefix);
+		//calculating the value and the prefix
+		let endValue = this.value * valueB;
+
+		//prefixeds are not done
+		let endPrefix = this.prefix;
+		//dealing with kiliograms
+		if (IsKilogram(this.unit)) {
+			endValue = endValue / 1000;
+		}
+		if (IsKilogram(b.unit)) {
+			endValue = endValue / 1000;
+		}
+		if (IsKilogram(this.unit) && IsKilogram(b.unit)) {
+			endValue = endValue * Math.pow(10, 6);
+			endPrefix = endPrefix - 3;
+		}
+
+		//unit manipulation
+		let newUnit: Unit<number> = getEmptyUnit();
+		for (let i = 0; i < newUnit.length; i++) {
+			newUnit[i] = this.unit[i] + b.unit[i];
+		}
+
+		return PhysicsVariable.fromValues(endValue, endPrefix, newUnit);
+	}
+
+	public Divide(b: PhysicsVariable): PhysicsVariable {
+		//common base
+		let valueB = b.convertValueToBase(this.prefix);
+		//calculating the value and the prefix
+		let endValue = this.value / valueB;
+
+		//prefixeds are not done
+		let endPrefix = this.prefix;
+		//dealing with kiliograms
+		if (IsKilogram(this.unit)) {
+			endValue = endValue * 1000;
+		}
+		if (IsKilogram(b.unit)) {
+			endValue = endValue * 1000;
+		}
+		if (IsKilogram(this.unit) && IsKilogram(b.unit)) {
+			endValue = endValue / Math.pow(10, 6);
+			endPrefix = endPrefix - 3;
+		}
+
+		//unit manipulation
+		let newUnit: Unit<number> = getEmptyUnit();
+		for (let i = 0; i < newUnit.length; i++) {
+			newUnit[i] = this.unit[i] - b.unit[i];
+		}
+
+		return PhysicsVariable.fromValues(endValue, endPrefix, newUnit);
+	}
+
+	//There may be errors with kilogram calculations provide me with example unit test please
+	public ToPower(b: PhysicsVariable): PhysicsVariable {
+		//throw out if b has a unit
+		if (!this.IsEmptyUnit()) {
+			throw new UnitInExponent();
+		}
+		//convert both a and b to base 0
+		let base0A = this.convertValueToBase(0);
+		let base0B = b.convertValueToBase(0);
+		let resultBase0 = Math.pow(base0A, base0B);
+		//convert result to original prefix
+		let result = resultBase0 * Math.pow(10, this.prefix);
+		return PhysicsVariable.fromValues(result, this.prefix, this.unit);
+	}
+
+	public IsEqual(b: PhysicsVariable): boolean {
+		// check unit
+		if (this.getUnitString() !== b.getUnitString()) {
+			return false;
+		}
+		//check converted value
+		//perhaps add later small approximations
+		if (this.value !== b.convertValueToBase(this.prefix)) {
+			return true;
+		}
+		return true;
+	}
+
+	public IsEmptyUnit(): boolean {
+		for (let i = 0; i < this.unit.length; i++) {
+			if (this.unit[i] !== 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public IsNegative(): boolean {
+		return this.value < 0;
+	}
+	public IsPositive(): boolean {
+		return this.value > 0;
+	}
+	public IsZero(): boolean {
+		return this.value === 0;
 	}
 }

@@ -69,7 +69,7 @@ export class PhysicsVariable {
 		this.unit = getEmptyUnit();
 	}
 
-	public static fromString(inStr: string) {
+	public static fromString(inStr: string): PhysicsVariable {
 		const pv = new PhysicsVariable();
 		try {
 			const strArr = inStr.split(',');
@@ -86,11 +86,23 @@ export class PhysicsVariable {
 		return pv;
 	}
 
-	public static fromValues(value: number, prefix: number, unit: Unit<number>) {
+	public static fromValues(
+		value: number,
+		prefix: number,
+		unit: Unit<number>
+	): PhysicsVariable {
 		const pv = new PhysicsVariable();
 		pv.setValue(value);
 		pv.setPrefix(prefix);
 		pv.setUnit(unit);
+		return pv;
+	}
+
+	public static makeConstant(value: number): PhysicsVariable {
+		const pv = new PhysicsVariable();
+		pv.setValue(value);
+		pv.setPrefix(0);
+		pv.setUnit(getEmptyUnit());
 		return pv;
 	}
 
@@ -233,14 +245,20 @@ export class PhysicsVariable {
 		let endPrefix = this.prefix;
 		//dealing with kiliograms
 		if (IsKilogram(this.unit)) {
-			endValue = endValue / 1000;
+			// endValue = endValue / 1000;
 		}
 		if (IsKilogram(b.unit)) {
 			endValue = endValue / 1000;
 		}
 		if (IsKilogram(this.unit) && IsKilogram(b.unit)) {
-			endValue = endValue * Math.pow(10, 6);
+			endValue = endValue * Math.pow(10, 3);
 			endPrefix = endPrefix - 3;
+		}
+		if (IsKilogram(this.unit) && b.IsEmptyUnit()) {
+			endPrefix = endPrefix + 3;
+		}
+		if (IsKilogram(b.unit) && this.IsEmptyUnit()) {
+			endPrefix = endPrefix + 3;
 		}
 
 		//unit manipulation
@@ -271,6 +289,12 @@ export class PhysicsVariable {
 			endValue = endValue / Math.pow(10, 6);
 			endPrefix = endPrefix - 3;
 		}
+		if (IsKilogram(this.unit) && b.IsEmptyUnit()) {
+			endPrefix = endPrefix - 3;
+		}
+		if (IsKilogram(b.unit) && this.IsEmptyUnit()) {
+			endPrefix = endPrefix - 3;
+		}
 
 		//unit manipulation
 		let newUnit: Unit<number> = getEmptyUnit();
@@ -284,7 +308,7 @@ export class PhysicsVariable {
 	//There may be errors with kilogram calculations provide me with example unit test please
 	public ToPower(b: PhysicsVariable): PhysicsVariable {
 		//throw out if b has a unit
-		if (!this.IsEmptyUnit()) {
+		if (!b.IsEmptyUnit()) {
 			throw new UnitInExponent();
 		}
 		//convert both a and b to base 0
@@ -293,7 +317,15 @@ export class PhysicsVariable {
 		let resultBase0 = Math.pow(base0A, base0B);
 		//convert result to original prefix
 		let result = resultBase0 * Math.pow(10, this.prefix);
-		return PhysicsVariable.fromValues(result, this.prefix, this.unit);
+
+		//convert unit aka multiple by itself
+		let newUnit: Unit<number> = getEmptyUnit();
+		for (let i = 0; i < newUnit.length; i++) {
+			newUnit[i] = this.unit[i] + this.unit[i];
+		}
+
+		let pvRet = PhysicsVariable.fromValues(result, this.prefix, newUnit);
+		return pvRet;
 	}
 
 	public IsEqual(b: PhysicsVariable): boolean {
@@ -326,5 +358,20 @@ export class PhysicsVariable {
 	}
 	public IsZero(): boolean {
 		return this.value === 0;
+	}
+	public toZeroPrefix(): PhysicsVariable {
+		if (IsKilogram(this.unit)) {
+			return PhysicsVariable.fromValues(
+				this.value * Math.pow(10, this.prefix - 3),
+				0,
+				this.unit
+			);
+		} else {
+			return PhysicsVariable.fromValues(
+				this.value * Math.pow(10, this.prefix),
+				0,
+				this.unit
+			);
+		}
 	}
 }

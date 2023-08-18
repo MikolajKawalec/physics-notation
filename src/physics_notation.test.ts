@@ -1,3 +1,4 @@
+import { PhysicsEquation, infixToPostfix } from './physics_equation';
 import {
 	PhysicsVariable,
 	getEmptyUnit,
@@ -136,6 +137,11 @@ test('Multiple 1kg 1kg = 1kg^2', () => {
 	expect(pvResult.toVerboseString()).toEqual('1kg^(2)');
 });
 
+test('Convert 1Mg to zero prefix aka 1000kg', () => {
+	let pv1 = PhysicsVariable.fromString('1,6,0,0,1,0,0,0,0');
+	expect(pv1.toZeroPrefix().toVerboseString()).toEqual('1000kg');
+});
+
 test('Multiple 1s by 100 (no unit) = 100s', () => {
 	let pv1 = PhysicsVariable.fromString('1,0,1,0,0,0,0,0,0');
 	let pv2 = PhysicsVariable.fromString('100,0,0,0,0,0,0,0,0');
@@ -166,4 +172,67 @@ test('Divide 5 by 2 = 2.5', () => {
 	expect(pv1.Divide(pv2).toVerboseString()).toEqual('2.5');
 });
 
+//Reverse Polish Notation Tests
+
+test('Convert to Polish notation 0+1', () => {
+	let str = '0+1';
+	let revPolNot = infixToPostfix(str);
+	expect(revPolNot).toEqual('01+');
+});
+
+test('Convert to Polish notation 0*1*2^3 (1/2mv^2)', () => {
+	let str = '0*1*2^3';
+	let revPolNot = infixToPostfix(str);
+	//Subject to later coding ideas
+	expect(revPolNot).toEqual('01*23^*');
+});
+
+test('Making 0+1 of adding 1s +5s', () => {
+	let str = '0+1';
+	let revPolNot = infixToPostfix(str);
+	expect(revPolNot).toEqual('01+');
+	let pv0 = PhysicsVariable.fromString('1,0,1,0,0,0,0,0,0');
+	let pv1 = PhysicsVariable.fromString('5,0,1,0,0,0,0,0,0');
+	let variables = [pv0, pv1];
+	let pe = PhysicsEquation.fromString(str, variables);
+	let pvResult = pe.calculate();
+	expect(pvResult.toVerboseString()).toEqual('6s');
+});
+
+test('Kinetic Energy equation with mass = 1kg, v=1m/s', () => {
+	let str = '0*1*2^3';
+	let half = PhysicsVariable.makeConstant(0.5);
+	let mass = PhysicsVariable.fromString('1,3,0,0,1,0,0,0,0');
+	let velocity = PhysicsVariable.fromString('1,0,-1,1,0,0,0,0,0');
+	let two = PhysicsVariable.makeConstant(2);
+	let variables = [half, mass, velocity, two];
+	let pe = PhysicsEquation.fromString(str, variables);
+	expect(infixToPostfix(str)).toEqual('01*23^*');
+	let pvResult = pe.calculate();
+	expect(pvResult.toZeroPrefix().toVerboseString()).toEqual('0.5J');
+});
+
+test('Kinetic Energy equation, Igor Polish Notation', () => {
+	let str = '01^2*3*';
+
+	let half = PhysicsVariable.makeConstant(0.5);
+	let mass = PhysicsVariable.fromString('1,3,0,0,1,0,0,0,0');
+
+	let velocity = PhysicsVariable.fromString('1,0,-1,1,0,0,0,0,0');
+
+	let two = PhysicsVariable.makeConstant(2);
+
+	let variables = [velocity, two, mass, half];
+	let pe = PhysicsEquation.fromReversePolish(str, variables);
+	let pvResult = pe.calculate();
+	expect(pvResult.toVerboseString()).toEqual('0.5J');
+});
 //Write tests for exponent
+let pv0 = new PhysicsVariable();
+let pv1 = new PhysicsVariable();
+let pv2 = new PhysicsVariable();
+let pv3 = new PhysicsVariable();
+let arr = [pv0, pv1, pv2, pv3];
+// E = (1/2)mv^(2)
+let equationStr = '0*1*2^3';
+let output: PhysicsVariable;

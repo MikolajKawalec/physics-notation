@@ -152,7 +152,7 @@ export class PhysicsEquation {
 		this.variables = variables;
 	}
 
-	//this would break something so error catching in caluculation should be accomodaded for
+	//this would break something so error catching in caluculation should be accomodated for
 	public setEquation(equation: string): void {
 		this.equationString = equation;
 	}

@@ -5,8 +5,9 @@
 		"sourceMap": true,
 		"outDir": "./dist",
 		"noImplicitAny": true,
-		"declaration": true
+		"declaration": true,
+		"rootDir": "./src"
 	},
-	"include": ["src/**/*"],
+	"include": ["src/index.ts"],
 	"exclude": ["node_modules"]
 }

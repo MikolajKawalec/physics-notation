@@ -7,6 +7,19 @@ export function getEmptyUnit(): Unit<number> {
 	return [0, 0, 0, 0, 0, 0, 0];
 }
 
+export function convertUnitStringToUnitArray(unitString: string): Unit<Number> {
+	const splitted = unitString.split(',');
+	return [
+		parseInt(splitted[0]),
+		parseInt(splitted[1]),
+		parseInt(splitted[2]),
+		parseInt(splitted[3]),
+		parseInt(splitted[4]),
+		parseInt(splitted[5]),
+		parseInt(splitted[6]),
+	];
+}
+
 export function IsKilogram(unit: Unit<number>): boolean {
 	let kg = [0, 0, 1, 0, 0, 0, 0];
 	let checkUnit = [...unit];

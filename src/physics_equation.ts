@@ -157,6 +157,14 @@ export class PhysicsEquation {
 		this.equationString = equation;
 	}
 
+	public get_formula_string(): string {
+		return this.equationString;
+	}
+
+	public get_formula_array(): Array<PhysicsVariable> {
+		return this.variables;
+	}
+
 	public calculate(): PhysicsVariable {
 		const s: Array<PhysicsVariable> = [];
 		const tokens = this.equationString.split('');

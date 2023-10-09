@@ -7,7 +7,7 @@ export function getEmptyUnit(): Unit<number> {
 	return [0, 0, 0, 0, 0, 0, 0];
 }
 
-export function convertUnitStringToUnitArray(unitString: string): Unit<Number> {
+export function convertUnitStringToUnitArray(unitString: string): Unit<number> {
 	const splitted = unitString.split(',');
 	return [
 		parseInt(splitted[0]),

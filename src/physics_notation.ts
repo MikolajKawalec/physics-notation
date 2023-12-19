@@ -224,6 +224,7 @@ export class PhysicsVariable {
 		}
 	}
 
+	//@pmfenix
 	public Add(b: PhysicsVariable): PhysicsVariable {
 		//typechecks first
 		if (this.getUnitString() !== b.getUnitString()) {

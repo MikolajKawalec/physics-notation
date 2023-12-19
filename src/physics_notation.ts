@@ -72,6 +72,8 @@ export class UnitInExponent extends Error {
 }
 
 export class PhysicsVariable {
+	//TODO add procted attribiute id
+
 	protected value: number;
 	protected prefix: number;
 	protected unit: Unit<number>;
@@ -340,6 +342,8 @@ export class PhysicsVariable {
 		let pvRet = PhysicsVariable.fromValues(result, this.prefix, newUnit);
 		return pvRet;
 	}
+
+	//TODO place more operators here define them such as sin cos tan etc
 
 	public IsEqual(b: PhysicsVariable): boolean {
 		// check unit

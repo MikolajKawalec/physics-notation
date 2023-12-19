@@ -99,6 +99,62 @@ export function infixToPostfix(input: string) {
 		}
 	};
 
+	// TODO
+	// the problem is that the input is a string, so we need to split it into tokens
+	// it not parse 7 as 7 but to look as it may be 55
+	// s may become a sin, which a (to be) defined operator
+	// likewise with the ids of variables used
+	// I attach below what copilot (AI) suggests
+
+	// const tokenize = (input: string) => {
+	// 	const tokens = [];
+	// 	let currentToken = '';
+
+	// 	for (let i = 0; i < input.length; i++) {
+	// 		const char = input[i];
+	// 		const nextChar = input[i + 1];
+
+	// 		if (opSymbols.includes(char + nextChar)) {
+	// 			// This is a multi-character operator.
+	// 			tokens.push(char + nextChar);
+	// 			i++; // Skip the next character.
+	// 		} else if (opSymbols.includes(char)) {
+	// 			// This is a single-character operator.
+	// 			tokens.push(char);
+	// 		} else {
+	// 			// This is a number or other token.
+	// 			currentToken += char;
+	// 			if (i === input.length - 1 || opSymbols.includes(nextChar)) {
+	// 				tokens.push(currentToken);
+	// 				currentToken = '';
+	// 			}
+	// 		}
+	// 	}
+
+	// 	return tokens;
+	// };
+
+	//TODO
+	//Tokens to be implemtened
+	// recognition for tokens and appropriate handling in physics_notation.ts and their methods to Physics Variable
+	// sin
+	// cos
+	// tan
+	// cot
+	// csc
+	// sec
+	// arcsin
+	// arccos
+	// arctan
+	// arccot
+	// arcsec
+	// arccsc
+	// log
+	// ln
+	// abs
+	// max
+	// min
+
 	for (let i of input) {
 		if (i === ' ') continue;
 
@@ -120,6 +176,8 @@ infixToPostfix(exp);
 
 //string of prefix to postfix
 export class PhysicsEquation {
+	// variabes should be dict {key: string (id): value: PhysicsVariable}
+
 	protected variables: PhysicsVariable[];
 	protected equationString: string;
 
@@ -165,6 +223,8 @@ export class PhysicsEquation {
 		return this.variables;
 	}
 
+	//TODO
+	//this needs to be implemented to handle the tokens rather than searching for variables based upon their index
 	public calculate(): PhysicsVariable {
 		const s: Array<PhysicsVariable> = [];
 		const tokens = this.equationString.split('');

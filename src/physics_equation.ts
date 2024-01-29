@@ -44,7 +44,32 @@ const assert = (predicate: any) => {
 }
 
 export function tokenize(inputString: string): Array<string> {
-  return []
+  let pom_pm: string = inputString
+  let licznik_petla: number = 3
+  let wektor_dzialan: Array<string> = ['-', '+', ':', '^', '(', ')', '*']
+  let wektor_wynikowy: Array<string> = []
+  let wektor_wynikowy_opis: Array<string> = []
+  let zmienna_czytajaca: string = ''
+  let licznik: number = 0
+  console.log('Wynik dzialania funkcji tokenize: ' + pom_pm_01)
+  let dlugosc_zmiennej = pom_pm.length
+  for (licznik_petla = 0; licznik_petla < dlugosc_zmiennej; licznik_petla++) {
+    let pom_pm_01: string = inputString[licznik_petla]
+  }
+  if (wektor_dzialan.includes(pom_pm_01)) {
+    console.log('Jest znak')
+    wektor_wynikowy.push(pom_pm_01)
+    wektor_wynikowy_opis.push('operacja')
+    licznik = licznik + 1
+  } else {
+    console.log('Znaku brak')
+    zmienna_czytajaca = zmienna_czytajaca.concat(pom_pm_01)
+    wektor_wynikowy.splice(licznik, 0, zmienna_czytajaca)
+    wektor_wynikowy_opis.splice(licznik, 0, 'liczba')
+  }
+  console.log('wektor_wynikowy', wektor_wynikowy.toString())
+  console.log('wektor_wynikowy_opis', wektor_wynikowy_opis.toString())
+  return [pom_pm, pom_pm_01, wektor_dzialan.toString()]
 }
 
 export function infixToPostfix(input: string) {

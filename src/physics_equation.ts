@@ -44,33 +44,64 @@ const assert = (predicate: any) => {
 };
 
 export function tokenize(inputString: string): Array<string> {
-  let pom_pm:string=inputString
-  let licznik_petla:number=3
-  let wektor_dzialan:Array<string>=["-","+",":","^","(",")","*"]
-  let wektor_wynikowy:Array<string>=[]
-  let wektor_wynikowy_opis:Array<string>=[]
-  let zmienna_czytajaca:string=""
-  let licznik:number=0
-  console.log("Wynik dzialania funkcji tokenize: "+pom_pm_01)
-  let dlugosc_zmiennej=pom_pm.length
-  for (licznik_petla =0; licznik_petla < dlugosc_zmiennej; licznik_petla++) {
-  let pom_pm_01:string=inputString[licznik_petla]
-  }
-  if(wektor_dzialan.includes(pom_pm_01)){
-    console.log("Jest znak")
-    wektor_wynikowy.push(pom_pm_01)
-    wektor_wynikowy_opis.push("operacja")
-    licznik=licznik+1
-  }
-  else {
-    console.log("Znaku brak") 
-    zmienna_czytajaca=zmienna_czytajaca.concat(pom_pm_01)
-    wektor_wynikowy.splice(licznik,0,zmienna_czytajaca)
-    wektor_wynikowy_opis.splice(licznik,0,"liczba")
-  }
-  console.log("wektor_wynikowy", wektor_wynikowy.toString())
-  console.log("wektor_wynikowy_opis", wektor_wynikowy_opis.toString())
-  return [pom_pm, pom_pm_01, wektor_dzialan.toString()];
+  let operation_list:Array<string>=["-","+",":","^","(",")","*", "/"]
+  let results_list:Array<string>=[]
+//   let results_list_descript:Array<string>=[]
+  let temp_reading:string=""
+  let counter:number=0
+  let switch_replace=1
+  //console.log("Wynik dzialania funkcji tokenize: "+pom_pm_01)
+  
+  for (let i =0; i < inputString.length; i++) {
+	if(operation_list.includes(inputString[i])){
+		//console.log("licznik=", licznik_petla," Jest znak", "pom_pm_01",pom_pm_01)
+		results_list.push(inputString[i])
+		// results_list_descript.push("operacja")
+		counter=results_list.length
+		temp_reading = ""
+		switch_replace=0
+		}
+	else {
+		//console.log("Znaku brak") 
+		temp_reading=temp_reading.concat(inputString[i])
+		results_list.splice(counter,switch_replace,temp_reading)
+		// results_list_descript.splice(counter,switch_replace,"liczba")
+		switch_replace=1
+	}
+	
+}
+
+
+// dziala
+
+// let mathSymbol: string = ''
+
+// for(let i = 0; i < inputString.length; i++) {
+// 	if(wektor_dzialan.includes(inputString[i])) {
+// 		if(mathSymbol.length > 0)
+// 		{
+// 			wektor_wynikowy.push(mathSymbol)
+// 			wektor_wynikowy_opis.push("liczba")
+// 		}
+// 		mathSymbol = ''
+// 		wektor_wynikowy.push(inputString[i])
+// 		wektor_wynikowy_opis.push("operacja")
+// 	}
+// 	else if (i === inputString.length - 1) {
+// 		mathSymbol += inputString[i]
+// 		wektor_wynikowy.push(mathSymbol)
+// 		wektor_wynikowy_opis.push("liczba")
+// 		mathSymbol = ''
+// 	}
+// 	else {
+// 		mathSymbol += inputString[i]
+// 	}
+// }
+
+
+//   console.log("wektor_wynikowy", results_list.toString())
+//   console.log("wektor_wynikowy_opis", results_list_descript.toString())
+  return results_list;
 }
 
 export function infixToPostfix(input: string) {

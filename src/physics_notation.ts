@@ -344,7 +344,276 @@ export class PhysicsVariable {
     return pvRet
   }
 
-  //TODO place more operators here define them such as sin cos tan etc
+  // START OF UNCHECKED CODE
+
+  //@pmfenix
+  // All of the following functions are not implemented or AI implemented and not tested
+  // for all of them you must also convert to base 0 and then convert back to original prefix
+  // AI did not do that, ie sin(1000) = sin(1k) as 1k= 1000, also I think none of those function accepts
+  // any units so check for that
+  public Sin(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.sin(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Cos(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.cos(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Tan(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.tan(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Cot(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = 1 / Math.tan(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Csc(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = 1 / Math.sin(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Sec(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = 1 / Math.cos(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Arcsin(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.asin(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Arccos(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.acos(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Arctan(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.atan(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Arccot(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.atan(1 / this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Arcsec(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.acos(1 / this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Arccsc(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.asin(1 / this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Sinh(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.sinh(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Cosh(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.cosh(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Tanh(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.tanh(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Coth(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = 1 / Math.tanh(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Csch(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = 1 / Math.sinh(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Sech(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = 1 / Math.cosh(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Arcsinh(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.asinh(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Arccosh(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.acosh(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Arctanh(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.atanh(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Arccoth(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.atanh(1 / this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Arcsech(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.acosh(1 / this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Arccsch(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.asinh(1 / this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Ln(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.log(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Log10(): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    let result = Math.log10(this.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Log(b: PhysicsVariable): PhysicsVariable {
+    //check unit
+    if (!this.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+    if (!b.IsEmptyUnit()) {
+      throw new UnitsMismatchError()
+    }
+
+    let result = Math.log(this.value) / Math.log(b.value)
+    return PhysicsVariable.makeConstant(result)
+  }
+
+  public Abs(): PhysicsVariable {
+    let result = Math.abs(this.value)
+    return PhysicsVariable.fromValues(result, this.prefix, this.unit)
+  }
+
+  //Completly unimplemted
+
+  public Min(b: PhysicsVariable) {
+    return this
+  }
+
+  public Max(b: PhysicsVariable) {
+    return this
+  }
+
+  // END OF UNCHECKED CODE
 
   public IsEqual(b: PhysicsVariable): boolean {
     // check unit

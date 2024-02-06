@@ -1,6 +1,7 @@
 /* Javascript implementation to convert
     infix expression to postfix*/
 
+import { EquationMember } from './equation_member'
 import {
   PhysicsVariable,
   UnitInExponent,
@@ -15,6 +16,8 @@ function prec(c: string) {
   else return -1
 }
 
+//@pmfenix
+//add all operator with prec whitch stands for precedence
 const operators: any = {
   '^': {
     prec: 4,
@@ -100,7 +103,7 @@ export function tokenize(inputString: string): Array<string> {
   return results_list
 }
 
-export function infixToPostfix(input: string) {
+export function infixToPostfix(input: Array<string>): string {
   const opSymbols = Object.keys(operators)
   const stack: Array<any> = []
   let output = ''
@@ -117,7 +120,7 @@ export function infixToPostfix(input: string) {
     return stack.pop()
   }
 
-  const handleToken = (token: any) => {
+  const handleToken = (token: string) => {
     switch (true) {
       case !isNaN(parseFloat(token)):
         addToOutput(token)
@@ -156,62 +159,6 @@ export function infixToPostfix(input: string) {
     }
   }
 
-  // TODO
-  // the problem is that the input is a string, so we need to split it into tokens
-  // it not parse 7 as 7 but to look as it may be 55
-  // s may become a sin, which a (to be) defined operator
-  // likewise with the ids of variables used
-  // I attach below what copilot (AI) suggests
-
-  // const tokenize = (input: string) => {
-  // 	const tokens = [];
-  // 	let currentToken = '';
-
-  // 	for (let i = 0; i < input.length; i++) {
-  // 		const char = input[i];
-  // 		const nextChar = input[i + 1];
-
-  // 		if (opSymbols.includes(char + nextChar)) {
-  // 			// This is a multi-character operator.
-  // 			tokens.push(char + nextChar);
-  // 			i++; // Skip the next character.
-  // 		} else if (opSymbols.includes(char)) {
-  // 			// This is a single-character operator.
-  // 			tokens.push(char);
-  // 		} else {
-  // 			// This is a number or other token.
-  // 			currentToken += char;
-  // 			if (i === input.length - 1 || opSymbols.includes(nextChar)) {
-  // 				tokens.push(currentToken);
-  // 				currentToken = '';
-  // 			}
-  // 		}
-  // 	}
-
-  // 	return tokens;
-  // };
-
-  //TODO
-  //Tokens to be implemtened
-  // recognition for tokens and appropriate handling in physics_notation.ts and their methods to Physics Variable
-  // sin
-  // cos
-  // tan
-  // cot
-  // csc
-  // sec
-  // arcsin
-  // arccos
-  // arctan
-  // arccot
-  // arcsec
-  // arccsc
-  // log
-  // ln
-  // abs
-  // max
-  // min
-
   for (let i of input) {
     if (i === ' ') continue
 
@@ -226,16 +173,12 @@ export function infixToPostfix(input: string) {
   return output
 }
 
-let exp = 'a+b*(c^d-e)^(f+g*h)-i'
-infixToPostfix(exp)
-
 // This code is contributed by decode2207.
 
 //string of prefix to postfix
 export class PhysicsEquation {
-  // variabes should be dict {key: string (id): value: PhysicsVariable}
-
-  protected variables: PhysicsVariable[]
+  protected variables: EquationMember[]
+  //equation in postfix notation which is passed in constructors
   protected equationString: string
 
   constructor() {
@@ -245,17 +188,21 @@ export class PhysicsEquation {
 
   public static fromString(
     inStr: string,
-    variables: PhysicsVariable[],
+    variables: EquationMember[],
   ): PhysicsEquation {
     const pe = new PhysicsEquation()
     pe.setVariables(variables)
-    pe.setEquation(infixToPostfix(inStr))
+    const tokens = tokenize(inStr)
+    const postfixString = infixToPostfix(tokens)
+    pe.setEquation(postfixString)
     return pe
   }
 
+  //this is technically viable function but it is not used in the code and is not reccomened to be used
+  //as it takes as input string in reverse polish notation wtih id's of variables
   public static fromReversePolish(
     inStr: string,
-    variables: PhysicsVariable[],
+    variables: EquationMember[],
   ): PhysicsEquation {
     const pe = new PhysicsEquation()
     pe.setVariables(variables)
@@ -263,7 +210,7 @@ export class PhysicsEquation {
     return pe
   }
 
-  public setVariables(variables: PhysicsVariable[]): void {
+  public setVariables(variables: EquationMember[]): void {
     this.variables = variables
   }
 
@@ -288,8 +235,10 @@ export class PhysicsEquation {
 
     for (const t of tokens) {
       const n = Number(t)
+      //this is supposed to push on stack variables bs
       if (!isNaN(n)) {
-        s.push(this.variables[n])
+        //this is a not tested line of code
+        s.push(this.variables.find((v) => v.getId() === t))
       } else {
         if (s.length < 2) {
           throw new Error(`${t}: ${s}: insufficient operands.`)
@@ -341,6 +290,7 @@ export class PhysicsEquation {
               throw error
             }
             break
+          //Here more to be implemented
           default:
             throw new Error(`Unrecognized operator: [${t}]`)
         }

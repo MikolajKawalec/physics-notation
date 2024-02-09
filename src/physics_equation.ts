@@ -16,46 +16,63 @@ function prec(c: string) {
   else return -1
 }
 
-
 export type Operator = {
-	prec: number;
-	assoc: 'left' | 'right';
-  };
-  
-
+  prec: number
+  assoc: 'left' | 'right'
+}
 
 //@pmfenix
 //add all operator with prec whitch stands for precedence
-const operators: Map<string, Operator> = new Map ([
-  ['^', {
-    prec: 4,
-    assoc: 'right',
-  }],
-  ['*', {
-    prec: 3,
-    assoc: 'left',
-  }],
-  ['/', {
-    prec: 3,
-    assoc: 'left',
-  }],
-  ['+', {
-    prec: 2,
-    assoc: 'left',
-  }],
-  ['-', {
-    prec: 2,
-    assoc: 'left',
-  }],
-  ['sin', {
-	prec: 2,
-	assoc: 'right',
-  }],
-  ['max', {
-	prec:2,
-	assoc:'right'
-  }]
-
+const operators: Map<string, Operator> = new Map([
+  [
+    '^',
+    {
+      prec: 4,
+      assoc: 'right',
+    },
+  ],
+  [
+    '*',
+    {
+      prec: 3,
+      assoc: 'left',
+    },
+  ],
+  [
+    '/',
+    {
+      prec: 3,
+      assoc: 'left',
+    },
+  ],
+  [
+    '+',
+    {
+      prec: 2,
+      assoc: 'left',
+    },
+  ],
+  [
+    '-',
+    {
+      prec: 2,
+      assoc: 'left',
+    },
+  ],
+  [
+    'sin',
+    {
+      prec: 2,
+      assoc: 'right',
+    },
+  ],
+  [
+    'max',
+    {
+      prec: 2,
+      assoc: 'right',
+    },
+  ],
 ])
 
 const assert = (predicate: any) => {
@@ -64,12 +81,11 @@ const assert = (predicate: any) => {
 }
 
 export function tokenize(inputString: string): Array<string> {
-//   let operation_list: Array<string> = ['-', '+', ':', '^', '(', ')', '*', '/']
-  let operation_list: Array<string> = Array.from(operators.keys());
+  //   let operation_list: Array<string> = ['-', '+', ':', '^', '(', ')', '*', '/']
+  let operation_list: Array<string> = Array.from(operators.keys())
   operation_list.push('(')
   operation_list.push(')')
   operation_list.push(',')
-
 
   let results_list: Array<string> = []
   //   let results_list_descript:Array<string>=[]
@@ -127,7 +143,7 @@ export function tokenize(inputString: string): Array<string> {
 }
 
 export function infixToPostfix(input: Array<string>): string {
-  const opSymbols:Array<string> = Array.from(operators.keys());
+  const opSymbols: Array<string> = Array.from(operators.keys())
   const stack: Array<string> = []
   let output = ''
 
@@ -136,7 +152,7 @@ export function infixToPostfix(input: Array<string>): string {
   }
 
   const addToOutput = (token: string) => {
-	output.length === 0 ? '' : output += ' ' 
+    output.length === 0 ? '' : (output += ' ')
     output += token
   }
 
@@ -146,9 +162,11 @@ export function infixToPostfix(input: Array<string>): string {
 
   const handleToken = (token: string) => {
     switch (true) {
-    //   case !isNaN(parseFloat(token)):
-    //     addToOutput(token)
-    //     break
+      //   case !isNaN(parseFloat(token)):
+      //     addToOutput(token)
+      //     break
+      case token === ',':
+        break
       case opSymbols.includes(token):
         const o1 = token
         let o2 = peek()
@@ -158,7 +176,7 @@ export function infixToPostfix(input: Array<string>): string {
           o2 !== '(' &&
           (operators.get(o2).prec > operators.get(o1).prec ||
             (operators.get(o2).prec === operators.get(o1).prec &&
-			operators.get(o1).assoc === 'left'))
+              operators.get(o1).assoc === 'left'))
         ) {
           addToOutput(handlePop())
           o2 = peek()
@@ -175,23 +193,26 @@ export function infixToPostfix(input: Array<string>): string {
           addToOutput(handlePop())
           topOfStack = peek()
         }
-        assert(peek() === '(')
+
+        let firstCheck = peek() 
+        assert(firstCheck === '(')
         handlePop()
-		
-		// let bFoundParentheses = false
-		//|| bFoundParentheses === false
-		for (let index = stack.length -1; index > -1  ; index--) {
-			const element = stack[index];
-			if(element === '(') 
-			{
-				// bFoundParentheses = true
-				break
-			}
-			addToOutput(handlePop())
-		}
+
+        // if(firstCheck === '(') break
+        
+        // let bFoundParentheses = false
+        //|| bFoundParentheses === false
+        for (let index = stack.length - 1; index > -1; index--) {
+          const element = stack[index]
+          if (element === '(') {
+            // bFoundParentheses = true
+            break
+          }
+          addToOutput(handlePop())
+        }
         break
       default:
-		addToOutput(token)
+        addToOutput(token)
         break
     }
   }

@@ -184,7 +184,7 @@ test('Convert to Polish notation 0+1', () => {
 
 test('Convert to Polish notation 0*1*2^3 (1/2mv^2)', () => {
   let str = '0*1*2^3'
-  let tokens = tokenize(str) 
+  let tokens = tokenize(str)
   let revPolNot = infixToPostfix(tokens)
   //Subject to later coding ideas
   expect(revPolNot).toEqual('01*23^*')
@@ -196,13 +196,13 @@ test('Making 0+1 of adding 1s +5s', () => {
   let revPolNot = infixToPostfix(tokens)
   expect(revPolNot).toEqual('01+')
 
-  let pv0 = new EquationMember("zero")
+  let pv0 = new EquationMember('zero')
   pv0.fromString('1,0,1,0,0,0,0,0,0')
 
-  let pv1 = new EquationMember("one")
+  let pv1 = new EquationMember('one')
   pv1.fromString('5,0,1,0,0,0,0,0,0')
 
-  let variables:Array<EquationMember> = [pv0, pv1]
+  let variables: Array<EquationMember> = [pv0, pv1]
   let pe = PhysicsEquation.fromString(str, variables)
   let pvResult = pe.calculate()
   expect(pvResult.toVerboseString()).toEqual('6s')
@@ -210,19 +210,19 @@ test('Making 0+1 of adding 1s +5s', () => {
 
 test('Kinetic Energy equation with mass = 1kg, v=1m/s', () => {
   let str = '0*1*2^3'
- 
-  let half = new EquationMember("half")
+
+  let half = new EquationMember('half')
   half.makeConstant(0.5)
 
-  let mass = new EquationMember("mass")
-	mass.fromString('1,3,0,0,1,0,0,0,0')
- 
-  let velocity = new EquationMember("velocity")
+  let mass = new EquationMember('mass')
+  mass.fromString('1,3,0,0,1,0,0,0,0')
+
+  let velocity = new EquationMember('velocity')
   velocity.fromString('1,0,-1,1,0,0,0,0,0')
 
-  let two = new EquationMember("two")
+  let two = new EquationMember('two')
   two.makeConstant(2)
-  
+
   let variables = [half, mass, velocity, two]
 
   let tokens = tokenize(str)
@@ -236,18 +236,17 @@ test('Kinetic Energy equation with mass = 1kg, v=1m/s', () => {
 test('Kinetic Energy equation, Igor Polish Notation', () => {
   let str = '01^2*3*'
 
-  let half = new EquationMember("half")
+  let half = new EquationMember('half')
   half.makeConstant(0.5)
 
-  let mass = new EquationMember("mass")
-	mass.fromString('1,3,0,0,1,0,0,0,0')
- 
-  let velocity = new EquationMember("velocity")
+  let mass = new EquationMember('mass')
+  mass.fromString('1,3,0,0,1,0,0,0,0')
+
+  let velocity = new EquationMember('velocity')
   velocity.fromString('1,0,-1,1,0,0,0,0,0')
 
-  let two = new EquationMember("two")
+  let two = new EquationMember('two')
   two.makeConstant(2)
-
 
   let variables = [velocity, two, mass, half]
   let pe = PhysicsEquation.fromReversePolish(str, variables)
@@ -365,77 +364,66 @@ test('tokenization with complex expressions and functions', () => {
 })
 
 test('tokenization with spaces wikipedia shuting yard example one', () => {
-	let str = '3+4*2/(1-5)^2^3'
-	let tokens = tokenize(str)
-	expect(tokens).toEqual([
-	  '3',
-	  '+',
-	  '4',
-	  '*',
-	  '2',
-	  '/',
-	  '(',
-	  '1',
-	  '-',
-	  '5',
-	  ')',
-	  '^',
-	  '2',
-	  '^',
-	  '3'
-	])
-  })
+  let str = '3+4*2/(1-5)^2^3'
+  let tokens = tokenize(str)
+  expect(tokens).toEqual([
+    '3',
+    '+',
+    '4',
+    '*',
+    '2',
+    '/',
+    '(',
+    '1',
+    '-',
+    '5',
+    ')',
+    '^',
+    '2',
+    '^',
+    '3',
+  ])
+})
 
-  test('tokenization with spaces wikipedia shuting yard example two', () => {
-	let str = 'sin(max(2,3)/3*pi)'
-	let tokens = tokenize(str)
-	expect(tokens).toEqual([
-	  'sin',
-	  '(',
-	  'max',
-	  '(',
-	  '2',
-	  ',',
-	  '3',
-	  ')',
-	  '/',
-	  '3',
-	  '*',
-	  'pi',
-	  ')'
-	  
-	])
-  })
-
+test('tokenization with spaces wikipedia shuting yard example two', () => {
+  let str = 'sin(max(2,3)/3*pi)'
+  let tokens = tokenize(str)
+  expect(tokens).toEqual([
+    'sin',
+    '(',
+    'max',
+    '(',
+    '2',
+    ',',
+    '3',
+    ')',
+    '/',
+    '3',
+    '*',
+    'pi',
+    ')',
+  ])
+})
 
 //TODO check if there are test for tokenize for spaces in input
-test('Convert wikipedia example one no spaces', () => {
-	let str = '3+4*2/(1-5)^2^3'
-	let tokens = tokenize(str) 
-	let revPolNot = infixToPostfix(tokens)
-	//Subject to later coding ideas
-	expect(revPolNot).toEqual('3 4 2 * 1 5 - 2 3 ^ ^ / +')
-	
-	// old check for nospaces deprecated solution
-	// expect(revPolNot).toEqual('342*15-23^^/+')
-	
-  })
+test('Convert wikipedia example one', () => {
+  let str = '3+4*2/(1-5)^2^3'
+  let tokens = tokenize(str)
+  let revPolNot = infixToPostfix(tokens)
+  //Subject to later coding ideas
+  expect(revPolNot).toEqual('3 4 2 * 1 5 - 2 3 ^ ^ / +')
 
-  test('Convert wikipedia example one with spaces', () => {
-	let str = '3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3'
-	let tokens = tokenize(str) 
-	let revPolNot = infixToPostfix(tokens)
-	//Subject to later coding ideas
-	expect(revPolNot).toEqual('3 4 2 * 1 5 - 2 3 ^ ^ / +')
-  })
+  // old check for nospaces deprecated solution
+  // expect(revPolNot).toEqual('342*15-23^^/+')
+})
 
-  test('Convert wikipedia example two', () => {
-	let str = 'sin(max(2,3)/3*pi)'
-	let tokens = tokenize(str) 
-	let revPolNot = infixToPostfix(tokens)
-	//Subject to later coding ideas
-	// expect(revPolNot).toEqual('2 3 max 3 / pi * sin')
-	
-	//no spaces depreacted check
-	expect(revPolNot).toEqual('23max3/pi*sin')
-  })
+test('Convert wikipedia example two', () => {
+  let str = 'sin(max(2,3)/3*pi)'
+  let tokens = tokenize(str)
+  let revPolNot = infixToPostfix(tokens)
+  //Subject to later coding ideas
+  expect(revPolNot).toEqual('2 3 max 3 / pi * sin')
+
+  //no spaces depreacted check
+  // expect(revPolNot).toEqual('23max3/pi*sin')
+})

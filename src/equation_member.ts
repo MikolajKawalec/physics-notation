@@ -13,8 +13,6 @@ export class EquationMember extends PhysicsVariable {
   }
 
   public fromString(inStr: string): void {
-    
-
     try {
       const strArr = inStr.split(',')
       this.setValue(parseFloat(strArr[0]))
@@ -27,7 +25,7 @@ export class EquationMember extends PhysicsVariable {
     } catch (error) {
       throw error
     }
-    return 
+    return
   }
 
   public fromValues(

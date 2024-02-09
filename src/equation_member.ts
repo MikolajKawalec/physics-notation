@@ -12,22 +12,22 @@ export class EquationMember extends PhysicsVariable {
     return this.id
   }
 
-  public fromString(inStr: string): EquationMember {
-    const ev = new EquationMember(inStr)
+  public fromString(inStr: string): void {
+    
 
     try {
       const strArr = inStr.split(',')
-      ev.setValue(parseFloat(strArr[0]))
-      ev.setPrefix(parseFloat(strArr[1]))
+      this.setValue(parseFloat(strArr[0]))
+      this.setPrefix(parseFloat(strArr[1]))
       let floatArr: Unit<number> = getEmptyUnit()
       for (let i = 2; i < 9; i++) {
         floatArr[i - 2] = parseFloat(strArr[i])
       }
-      ev.setUnit(floatArr)
+      this.setUnit(floatArr)
     } catch (error) {
       throw error
     }
-    return ev
+    return 
   }
 
   public fromValues(
@@ -35,19 +35,16 @@ export class EquationMember extends PhysicsVariable {
     value: number,
     prefix: number,
     unit: Unit<number>,
-  ): EquationMember {
-    const ev = new EquationMember(id)
-    ev.setValue(value)
-    ev.setPrefix(prefix)
-    ev.setUnit(unit)
-    return ev
+  ): void {
+    this.setValue(value)
+    this.setPrefix(prefix)
+    this.setUnit(unit)
+    return
   }
 
-  public makeConstant(id: string, value: number): EquationMember {
-    const ev = new EquationMember(id)
-    ev.setValue(value)
-    ev.setPrefix(0)
-    ev.setUnit(getEmptyUnit())
-    return ev
+  public makeConstant(value: number): void {
+    this.setValue(value)
+    this.setPrefix(0)
+    this.setUnit(getEmptyUnit())
   }
 }

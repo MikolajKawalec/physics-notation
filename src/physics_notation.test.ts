@@ -179,7 +179,7 @@ test('Convert to Polish notation 0+1', () => {
   let str = '0+1'
   let token = tokenize(str)
   let revPolNot = infixToPostfix(token)
-  expect(revPolNot).toEqual('01+')
+  expect(revPolNot).toEqual('0 1 +')
 })
 
 test('Convert to Polish notation 0*1*2^3 (1/2mv^2)', () => {
@@ -187,14 +187,14 @@ test('Convert to Polish notation 0*1*2^3 (1/2mv^2)', () => {
   let tokens = tokenize(str)
   let revPolNot = infixToPostfix(tokens)
   //Subject to later coding ideas
-  expect(revPolNot).toEqual('01*23^*')
+  expect(revPolNot).toEqual('0 1 * 2 3 ^ *')
 })
 
 test('Making 0+1 of adding 1s +5s', () => {
   let str = '0+1'
   let tokens = tokenize(str)
   let revPolNot = infixToPostfix(tokens)
-  expect(revPolNot).toEqual('01+')
+  expect(revPolNot).toEqual('0 1 +')
 
   let pv0 = new EquationMember('zero')
   pv0.fromString('1,0,1,0,0,0,0,0,0')

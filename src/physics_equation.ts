@@ -187,29 +187,13 @@ export function infixToPostfix(input: Array<string>): string {
         stack.push(token)
         break
       case token === ')':
-        let topOfStack = peek()
-        while (topOfStack !== '(') {
-          assert(stack.length !== 0)
-          addToOutput(handlePop())
-          topOfStack = peek()
+        if (peek() === '(') {
+          handlePop()
         }
-
-        let firstCheck = peek() 
-        assert(firstCheck === '(')
+        while (stack.length > 0 && peek() !== '(') {
+          addToOutput(handlePop())
+        }
         handlePop()
-
-        // if(firstCheck === '(') break
-        
-        // let bFoundParentheses = false
-        //|| bFoundParentheses === false
-        for (let index = stack.length - 1; index > -1; index--) {
-          const element = stack[index]
-          if (element === '(') {
-            // bFoundParentheses = true
-            break
-          }
-          addToOutput(handlePop())
-        }
         break
       default:
         addToOutput(token)

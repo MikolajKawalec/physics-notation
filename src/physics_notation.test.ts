@@ -190,11 +190,11 @@ test('Convert to Polish notation 0*1*2^3 (1/2mv^2)', () => {
   expect(revPolNot).toEqual('0 1 * 2 3 ^ *')
 })
 
-test('Making 0+1 of adding 1s +5s', () => {
-  let str = '0+1'
+test('Making zero+one of adding 1s +5s', () => {
+  let str = 'zero+one'
   let tokens = tokenize(str)
   let revPolNot = infixToPostfix(tokens)
-  expect(revPolNot).toEqual('0 1 +')
+  expect(revPolNot).toEqual('zero one +')
 
   let pv0 = new EquationMember('zero')
   pv0.fromString('1,0,1,0,0,0,0,0,0')
@@ -209,7 +209,7 @@ test('Making 0+1 of adding 1s +5s', () => {
 })
 
 test('Kinetic Energy equation with mass = 1kg, v=1m/s', () => {
-  let str = '0*1*2^3'
+  let str = 'half*mass*velocity^two'
 
   let half = new EquationMember('half')
   half.makeConstant(0.5)
@@ -228,34 +228,34 @@ test('Kinetic Energy equation with mass = 1kg, v=1m/s', () => {
   let tokens = tokenize(str)
 
   let pe = PhysicsEquation.fromString(str, variables)
-  expect(infixToPostfix(tokens)).toEqual('01*23^*')
+  expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
   let pvResult = pe.calculate()
   expect(pvResult.toZeroPrefix().toVerboseString()).toEqual('0.5J')
 })
 
-test('Kinetic Energy equation, Igor Polish Notation', () => {
-  let str = '01^2*3*'
+//Depracted tests
 
-  let half = new EquationMember('half')
-  half.makeConstant(0.5)
+// test('Kinetic Energy equation, Igor Polish Notation', () => {
+//   let str = '01^2*3*'
 
-  let mass = new EquationMember('mass')
-  mass.fromString('1,3,0,0,1,0,0,0,0')
+//   let half = new EquationMember('half')
+//   half.makeConstant(0.5)
 
-  let velocity = new EquationMember('velocity')
-  velocity.fromString('1,0,-1,1,0,0,0,0,0')
+//   let mass = new EquationMember('mass')
+//   mass.fromString('1,3,0,0,1,0,0,0,0')
 
-  let two = new EquationMember('two')
-  two.makeConstant(2)
+//   let velocity = new EquationMember('velocity')
+//   velocity.fromString('1,0,-1,1,0,0,0,0,0')
 
-  let variables = [velocity, two, mass, half]
-  let pe = PhysicsEquation.fromReversePolish(str, variables)
-  let pvResult = pe.calculate()
-  expect(pvResult.toVerboseString()).toEqual('0.5J')
-})
+//   let two = new EquationMember('two')
+//   two.makeConstant(2)
 
-//@pmfenix
-// Tests for tokenizaion, their return type is Array<string>
+//   let variables = [velocity, two, mass, half]
+//   let pe = PhysicsEquation.fromReversePolish(str, variables)
+//   let pvResult = pe.calculate()
+//   expect(pvResult.toVerboseString()).toEqual('0.5J')
+// })
+
 test('simple tokenization', () => {
   let str = '0+1'
   let tokens = tokenize(str)

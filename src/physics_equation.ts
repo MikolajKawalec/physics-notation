@@ -273,12 +273,14 @@ export class PhysicsEquation {
   //this needs to be implemented to handle the tokens rather than searching for variables based upon their index
   public calculate(): PhysicsVariable {
     const s: Array<PhysicsVariable> = []
-    const tokens = this.equationString.split('')
+    const tokens = this.equationString.split(' ')
+    const opSymbols: Array<string> = Array.from(operators.keys())
 
     for (const t of tokens) {
       const n = Number(t)
-      //this is supposed to push on stack variables bs
-      if (!isNaN(n)) {
+      //this is supposed to push on stack variables be
+      //so things that are not operators
+      if (!opSymbols.includes(t)) {
         //this is a not tested line of code
         s.push(this.variables.find((v) => v.getId() === t))
       } else {

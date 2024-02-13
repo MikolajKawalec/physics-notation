@@ -62,14 +62,21 @@ const operators: Map<string, Operator> = new Map([
   [
     'sin',
     {
-      prec: 2,
+      prec: 4,
+      assoc: 'right',
+    },
+  ],
+  [
+    'cos',
+    {
+      prec: 4,
       assoc: 'right',
     },
   ],
   [
     'max',
     {
-      prec: 2,
+      prec: 4,
       assoc: 'right',
     },
   ],
@@ -284,7 +291,7 @@ export class PhysicsEquation {
         //this is a not tested line of code
         s.push(this.variables.find((v) => v.getId() === t))
       } else {
-        if (s.length < 2) {
+        if (s.length < 1) {
           throw new Error(`${t}: ${s}: insufficient operands.`)
         }
         const o2 = s.pop()
@@ -334,6 +341,307 @@ export class PhysicsEquation {
               throw error
             }
             break
+          case 'sin':
+            try {
+              s.push(o2.Sin())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+
+          case 'cos':
+            try {
+              s.push(o2.Cos())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'tan':
+            try {
+              s.push(o2.Tan())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'cot':
+            try {
+              s.push(o2.Cot())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'csc':
+            try {
+              s.push(o2.Csc())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'sec':
+            try {
+              s.push(o2.Sec())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+            }
+            break
+          case 'arcsin':
+            try {
+              s.push(o2.Arcsin())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'arccos':
+            try {
+              s.push(o2.Arccos())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'arctan':
+            try {
+              s.push(o2.Arctan())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'arccot':
+            try {
+              s.push(o2.Arccot())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'arcsec':
+            try {
+              s.push(o2.Arcsec())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'arccsc':
+            try {
+              s.push(o2.Arccsc())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'sinh':
+            try {
+              s.push(o2.Sinh())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'cosh':
+            try {
+              s.push(o2.Cosh())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'tanh':
+            try {
+              s.push(o2.Tanh())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'coth':
+            try {
+              s.push(o2.Coth())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'csch':
+            try {
+              s.push(o2.Csch())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'sech':
+            try {
+              s.push(o2.Sech())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'arcsinh':
+            try {
+              s.push(o2.Arcsinh())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'arccosh':
+            try {
+              s.push(o2.Arccosh())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'arctanh':
+            try {
+              s.push(o2.Arctanh())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'arccoth':
+            try {
+              s.push(o2.Arccoth())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'arcsech':
+            try {
+              s.push(o2.Arcsech())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'arccsch':
+            try {
+              s.push(o2.Arccsch())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'ln':
+            try {
+              s.push(o2.Ln())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'log10':
+            try {
+              s.push(o2.Log10())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'log':
+            try {
+              s.push(o2.Log(o1))
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'abs':
+            try {
+              s.push(o2.Abs())
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'min':
+            try {
+              s.push(o2.Min(o1))
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+          case 'max':
+            try {
+              s.push(o2.Max(o1))
+            } catch (error) {
+              if (error instanceof UnitInExponent) {
+                throw UnitInExponent
+              }
+              throw error
+            }
+            break
+
           //Here more to be implemented
           default:
             throw new Error(`Unrecognized operator: [${t}]`)

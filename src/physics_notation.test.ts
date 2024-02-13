@@ -108,6 +108,12 @@ test('Substract 1J from 1kJ', () => {
   expect(pv1.Substract(pv2).toVerboseString()).toEqual('0.999kJ')
 })
 
+test('SIN 30 but in radians', () => {
+  let pv1 = PhysicsVariable.fromString('0.5233333333333,0,0,0,0,0,0,0,0')
+  //let pv2 = PhysicsVariable.fromString('1,0,-2,2,1,0,0,0,0')
+  expect(pv1.Sin().toVerboseString()).toEqual('0.5')
+})
+
 test('Substract 1kJ from 1J', () => {
   //1J
   let pv1 = PhysicsVariable.fromString('1,0,-2,2,1,0,0,0,0')
@@ -426,4 +432,35 @@ test('Convert wikipedia example two', () => {
 
   //no spaces depreacted check
   // expect(revPolNot).toEqual('23max3/pi*sin')
+})
+
+test('infix to postfix sin a / cos b', () => {
+  let str = 'sin(a)/cos(b)'
+  let tokens = tokenize(str)
+  let revPolNot = infixToPostfix(tokens)
+  //Subject to later coding ideas
+  expect(revPolNot).toEqual('a sin b cos /')
+
+  //no spaces depreacted check
+  // expect(revPolNot).toEqual('23max3/pi*sin')
+})
+
+test('sin(3.14/6) /cos(3.14/3)', () => {
+  let str = 'sin(a)/cos(b)'
+
+  let a = new EquationMember('a')
+  a.makeConstant(3.14/6)
+
+  let b = new EquationMember('b')
+  b.makeConstant(3.14/3)
+
+ 
+  let variables = [a, b]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().toVerboseString()).toEqual('1')
 })

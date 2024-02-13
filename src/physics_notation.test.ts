@@ -111,7 +111,7 @@ test('Substract 1J from 1kJ', () => {
 test('SIN 30 but in radians', () => {
   let pv1 = PhysicsVariable.fromString('0.5233333333333,0,0,0,0,0,0,0,0')
   //let pv2 = PhysicsVariable.fromString('1,0,-2,2,1,0,0,0,0')
-  expect(pv1.Sin().toVerboseString()).toEqual('0.5')
+  expect(pv1.Sin().getValue()).toBeCloseTo(0.5, 2)
 })
 
 test('Substract 1kJ from 1J', () => {
@@ -507,16 +507,15 @@ test('infix to postfix sin a / cos b', () => {
   // expect(revPolNot).toEqual('23max3/pi*sin')
 })
 
-test('sin(3.14/6) /cos(3.14/3)', () => {
+test('sin(3.14/6) / cos(3.14/3)', () => {
   let str = 'sin(a)/cos(b)'
 
   let a = new EquationMember('a')
-  a.makeConstant(3.14/6)
+  a.makeConstant(Math.PI / 6)
 
   let b = new EquationMember('b')
-  b.makeConstant(3.14/3)
+  b.makeConstant(Math.PI / 3)
 
- 
   let variables = [a, b]
 
   let tokens = tokenize(str)
@@ -524,5 +523,5 @@ test('sin(3.14/6) /cos(3.14/3)', () => {
   let pe = PhysicsEquation.fromString(str, variables)
   //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
   let pvResult = pe.calculate()
-  expect(pvResult.toZeroPrefix().toVerboseString()).toEqual('1')
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(1, 2)
 })

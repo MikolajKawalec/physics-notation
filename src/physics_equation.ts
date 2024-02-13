@@ -386,6 +386,7 @@ export class PhysicsEquation {
             }
             break
           case 'sin':
+            s.push(o1)
             try {
               s.push(o2.Sin())
             } catch (error) {
@@ -397,6 +398,7 @@ export class PhysicsEquation {
             break
 
           case 'cos':
+            s.push(o1)
             try {
               s.push(o2.Cos())
             } catch (error) {
@@ -407,6 +409,7 @@ export class PhysicsEquation {
             }
             break
           case 'tan':
+            s.push(o1)
             try {
               s.push(o2.Tan())
             } catch (error) {
@@ -417,6 +420,7 @@ export class PhysicsEquation {
             }
             break
           case 'cot':
+            s.push(o1)
             try {
               s.push(o2.Cot())
             } catch (error) {
@@ -427,6 +431,7 @@ export class PhysicsEquation {
             }
             break
           case 'csc':
+            s.push(o1)
             try {
               s.push(o2.Csc())
             } catch (error) {
@@ -437,6 +442,7 @@ export class PhysicsEquation {
             }
             break
           case 'sec':
+            s.push(o1)
             try {
               s.push(o2.Sec())
             } catch (error) {
@@ -446,6 +452,7 @@ export class PhysicsEquation {
             }
             break
           case 'arcsin':
+            s.push(o1)
             try {
               s.push(o2.Arcsin())
             } catch (error) {
@@ -456,6 +463,7 @@ export class PhysicsEquation {
             }
             break
           case 'arccos':
+            s.push(o1)
             try {
               s.push(o2.Arccos())
             } catch (error) {
@@ -466,6 +474,7 @@ export class PhysicsEquation {
             }
             break
           case 'arctan':
+            s.push(o1)
             try {
               s.push(o2.Arctan())
             } catch (error) {
@@ -476,6 +485,7 @@ export class PhysicsEquation {
             }
             break
           case 'arccot':
+            s.push(o1)
             try {
               s.push(o2.Arccot())
             } catch (error) {
@@ -486,6 +496,7 @@ export class PhysicsEquation {
             }
             break
           case 'arcsec':
+            s.push(o1)
             try {
               s.push(o2.Arcsec())
             } catch (error) {
@@ -496,6 +507,7 @@ export class PhysicsEquation {
             }
             break
           case 'arccsc':
+            s.push(o1)
             try {
               s.push(o2.Arccsc())
             } catch (error) {
@@ -506,6 +518,7 @@ export class PhysicsEquation {
             }
             break
           case 'sinh':
+            s.push(o1)
             try {
               s.push(o2.Sinh())
             } catch (error) {
@@ -516,6 +529,7 @@ export class PhysicsEquation {
             }
             break
           case 'cosh':
+            s.push(o1)
             try {
               s.push(o2.Cosh())
             } catch (error) {
@@ -526,6 +540,7 @@ export class PhysicsEquation {
             }
             break
           case 'tanh':
+            s.push(o1)
             try {
               s.push(o2.Tanh())
             } catch (error) {
@@ -536,6 +551,7 @@ export class PhysicsEquation {
             }
             break
           case 'coth':
+            s.push(o1)
             try {
               s.push(o2.Coth())
             } catch (error) {
@@ -546,6 +562,7 @@ export class PhysicsEquation {
             }
             break
           case 'csch':
+            s.push(o1)
             try {
               s.push(o2.Csch())
             } catch (error) {
@@ -556,6 +573,7 @@ export class PhysicsEquation {
             }
             break
           case 'sech':
+            s.push(o1)
             try {
               s.push(o2.Sech())
             } catch (error) {
@@ -566,6 +584,7 @@ export class PhysicsEquation {
             }
             break
           case 'arcsinh':
+            s.push(o1)
             try {
               s.push(o2.Arcsinh())
             } catch (error) {
@@ -576,6 +595,7 @@ export class PhysicsEquation {
             }
             break
           case 'arccosh':
+            s.push(o1)
             try {
               s.push(o2.Arccosh())
             } catch (error) {
@@ -586,6 +606,7 @@ export class PhysicsEquation {
             }
             break
           case 'arctanh':
+            s.push(o1)
             try {
               s.push(o2.Arctanh())
             } catch (error) {
@@ -596,6 +617,7 @@ export class PhysicsEquation {
             }
             break
           case 'arccoth':
+            s.push(o1)
             try {
               s.push(o2.Arccoth())
             } catch (error) {
@@ -606,6 +628,7 @@ export class PhysicsEquation {
             }
             break
           case 'arcsech':
+            s.push(o1)
             try {
               s.push(o2.Arcsech())
             } catch (error) {
@@ -616,6 +639,7 @@ export class PhysicsEquation {
             }
             break
           case 'arccsch':
+            s.push(o1)
             try {
               s.push(o2.Arccsch())
             } catch (error) {
@@ -626,6 +650,7 @@ export class PhysicsEquation {
             }
             break
           case 'ln':
+            s.push(o1)
             try {
               s.push(o2.Ln())
             } catch (error) {
@@ -636,6 +661,7 @@ export class PhysicsEquation {
             }
             break
           case 'log10':
+            s.push(o1)
             try {
               s.push(o2.Log10())
             } catch (error) {
@@ -656,6 +682,7 @@ export class PhysicsEquation {
             }
             break
           case 'abs':
+            s.push(o1)
             try {
               s.push(o2.Abs())
             } catch (error) {

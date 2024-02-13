@@ -75,6 +75,31 @@ const operators: Map<string, Operator> = new Map([
   ],
 ])
 
+const functionsNames = [
+  'sin',
+  'max',
+  'min',
+  'cos',
+  'tan',
+  'cot',
+  'sec',
+  'csc',
+  'asin',
+  'acos',
+  'atan',
+  'acot',
+  'asec',
+  'acsc',
+  'log',
+  'ln',
+  'log10',
+]
+
+const operatorsStringArray: Array<string> = [
+  ...Array.from(operators.keys()),
+  ...functionsNames,
+]
+
 const assert = (predicate: any) => {
   if (predicate) return
   throw new Error('Assertion failed due to invalid token')
@@ -82,7 +107,7 @@ const assert = (predicate: any) => {
 
 export function tokenize(inputString: string): Array<string> {
   //   let operation_list: Array<string> = ['-', '+', ':', '^', '(', ')', '*', '/']
-  let operation_list: Array<string> = Array.from(operators.keys())
+  let operation_list: Array<string> = [...operatorsStringArray]
   operation_list.push('(')
   operation_list.push(')')
   operation_list.push(',')
@@ -142,13 +167,30 @@ export function tokenize(inputString: string): Array<string> {
   return results_list
 }
 
-export function infixToPostfix(input: Array<string>): string {
-  const opSymbols: Array<string> = Array.from(operators.keys())
+//significantly based of github user: tkrotoff implementation
+//https://gist.github.com/tkrotoff/b0b1d39da340f5fc6c5e2a79a8b6cec0
+export function infixToPostfix(tokens: Array<string>): string {
+  const opSymbols: Array<string> = [...operatorsStringArray]
+
   const stack: Array<string> = []
   let output = ''
 
-  const peek = () => {
-    return stack.at(-1)
+  const top = (stack: Array<string>) => stack.at(-1)
+
+  const getPrecedence = (token: string) => {
+    try {
+      return operators.get(token).prec
+    } catch (error) {
+      return 0
+    }
+  }
+
+  const getAssociativity = (token: string) => {
+    try {
+      return operators.get(token).assoc
+    } catch (error) {
+      return 'left'
+    }
   }
 
   const addToOutput = (token: string) => {
@@ -160,56 +202,58 @@ export function infixToPostfix(input: Array<string>): string {
     return stack.pop()
   }
 
-  const handleToken = (token: string) => {
-    switch (true) {
-      //   case !isNaN(parseFloat(token)):
-      //     addToOutput(token)
-      //     break
-      case token === ',':
-        break
-      case opSymbols.includes(token):
-        const o1 = token
-        let o2 = peek()
+  for (const token of tokens) {
+    if (functionsNames.includes(token)) {
+      stack.push(token)
+    } else if (token === ',') {
+      while (stack.length > 0 && top(stack) !== '(') {
+        addToOutput(handlePop())
+      }
+      if (stack.length === 0) {
+        throw new Error("Misplaced ','")
+      }
+    } else if (opSymbols.includes(token)) {
+      const o1 = token
+      while (
+        stack.length > 0 &&
+        top(stack) !== undefined &&
+        top(stack) !== '(' &&
+        (getPrecedence(top(stack)) > getPrecedence(o1) ||
+          (getPrecedence(top(stack)) === getPrecedence(o1) &&
+            getAssociativity(o1) === 'left'))
+      ) {
+        addToOutput(handlePop()) // o2
+      }
+      stack.push(o1)
+    } else if (token === '(') {
+      stack.push(token)
+    } else if (token === ')') {
+      while (stack.length > 0 && top(stack) !== '(') {
+        addToOutput(handlePop())
+      }
+      if (stack.length > 0 && top(stack) === '(') {
+        stack.pop()
+      } else {
+        throw new Error('Parentheses mismatch')
+      }
 
-        while (
-          o2 !== undefined &&
-          o2 !== '(' &&
-          (operators.get(o2).prec > operators.get(o1).prec ||
-            (operators.get(o2).prec === operators.get(o1).prec &&
-              operators.get(o1).assoc === 'left'))
-        ) {
-          addToOutput(handlePop())
-          o2 = peek()
-        }
-        stack.push(o1)
-        break
-      case token === '(':
-        stack.push(token)
-        break
-      case token === ')':
-        if (peek() === '(') {
-          handlePop()
-        }
-        while (stack.length > 0 && peek() !== '(') {
-          addToOutput(handlePop())
-        }
-        handlePop()
-        break
-      default:
-        addToOutput(token)
-        break
+      // Seems like a weird fix
+      if (functionsNames.includes(top(stack))) {
+        addToOutput(handlePop())
+      }
+    } else {
+      addToOutput(token)
     }
   }
 
-  for (let i of input) {
-    if (i === ' ') continue
-
-    handleToken(i)
-  }
-
-  while (stack.length !== 0) {
-    assert(peek() !== '(')
-    addToOutput(stack.pop())
+  // Remaining items
+  while (stack.length > 0) {
+    const operator = top(stack)
+    if (operator === '(') {
+      throw new Error('Parentheses mismatch')
+    } else {
+      addToOutput(handlePop())
+    }
   }
 
   return output
@@ -274,7 +318,7 @@ export class PhysicsEquation {
   public calculate(): PhysicsVariable {
     const s: Array<PhysicsVariable> = []
     const tokens = this.equationString.split(' ')
-    const opSymbols: Array<string> = Array.from(operators.keys())
+    const opSymbols: Array<string> = [...operatorsStringArray]
 
     for (const t of tokens) {
       const n = Number(t)

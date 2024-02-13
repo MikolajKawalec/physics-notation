@@ -429,9 +429,71 @@ test('Convert wikipedia example two', () => {
   let revPolNot = infixToPostfix(tokens)
   //Subject to later coding ideas
   expect(revPolNot).toEqual('2 3 max 3 / pi * sin')
+})
 
-  //no spaces depreacted check
-  // expect(revPolNot).toEqual('23max3/pi*sin')
+//write 10 tests in style of the two above
+test('Complex to RPN test 1', () => {
+  let str = 'sin(x)+cos(y)-tan(z)'
+  let tokens = tokenize(str)
+  let revPolNot = infixToPostfix(tokens)
+  //Subject to later coding ideas
+  expect(revPolNot).toEqual('x sin y cos + z tan -')
+})
+
+test('Complex to RPN test 2', () => {
+  let str = 'sin(x)+cos(y)-tan(z)+cot(w)'
+  let tokens = tokenize(str)
+  let revPolNot = infixToPostfix(tokens)
+  //Subject to later coding ideas
+  expect(revPolNot).toEqual('x sin y cos + z tan - w cot +')
+})
+
+test('Complex to RPN test 3', () => {
+  let str = 'sin(x)+cos(y)-tan(z)+cot(w)+sec(v)'
+  let tokens = tokenize(str)
+  let revPolNot = infixToPostfix(tokens)
+  //Subject to later coding ideas
+  expect(revPolNot).toEqual('x sin y cos + z tan - w cot + v sec +')
+})
+
+test('Sin over cosine', () => {
+  let str = 'sin(x)/cos(y)'
+  let tokens = tokenize(str)
+  let revPolNot = infixToPostfix(tokens)
+  //Subject to later coding ideas
+  expect(revPolNot).toEqual('x sin y cos /')
+})
+
+test('Sin over cosine over tangent', () => {
+  let str = 'sin(x)/cos(y)/tan(z)'
+  let tokens = tokenize(str)
+  let revPolNot = infixToPostfix(tokens)
+  //Subject to later coding ideas
+  expect(revPolNot).toEqual('x sin y cos / z tan /')
+})
+
+test('Sin over cosine over tangent over cotangent', () => {
+  let str = 'sin(x)/cos(y)/tan(z)/cot(w)'
+  let tokens = tokenize(str)
+  let revPolNot = infixToPostfix(tokens)
+  //Subject to later coding ideas
+  expect(revPolNot).toEqual('x sin y cos / z tan / w cot /')
+})
+
+test('Sin over cosine over tangent over cotangent over secant', () => {
+  let str = 'sin(x)/cos(y)/tan(z)/cot(w)/sec(v)'
+  let tokens = tokenize(str)
+  let revPolNot = infixToPostfix(tokens)
+  //Subject to later coding ideas
+  expect(revPolNot).toEqual('x sin y cos / z tan / w cot / v sec /')
+})
+
+test('Sin over cosine over tangent over cotangent over secant over cosecant', () => {
+  let str = 'sin(x)/cos(y)/tan(z)/cot(w)/sec(v)/csc(u)'
+  let tokens = tokenize(str)
+  let revPolNot = infixToPostfix(tokens)
+  //Subject to later coding ideas
+  expect(revPolNot).toEqual('x sin y cos / z tan / w cot / v sec / u csc /')
 })
 
 test('infix to postfix sin a / cos b', () => {

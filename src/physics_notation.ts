@@ -1,6 +1,9 @@
 import { commonUnits } from './common_units'
 import { siPrefixes } from './si_prefixes'
 
+const BIG_NUMBER = 1000000000
+const SMALL_NUMBER = 0.000000001
+
 export type Unit<T> = [T, T, T, T, T, T, T]
 
 export function getEmptyUnit(): Unit<number> {
@@ -224,6 +227,19 @@ export class PhysicsVariable {
     }
   }
 
+  private SanitizeFunctionValue(value: number): number {
+    if (value > BIG_NUMBER) {
+      return Infinity
+    }
+    if (value < -BIG_NUMBER) {
+      return -Infinity
+    }
+    if (value < SMALL_NUMBER && value > -SMALL_NUMBER) {
+      return 0
+    }
+    return value
+  }
+
   //@pmfenix
   public Add(b: PhysicsVariable): PhysicsVariable {
     //typechecks first
@@ -357,6 +373,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.sin(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -366,6 +383,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.cos(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -375,6 +393,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.tan(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -384,6 +403,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = 1 / Math.tan(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -393,6 +413,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = 1 / Math.sin(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -402,6 +423,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = 1 / Math.cos(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -411,6 +433,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.asin(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -420,6 +443,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.acos(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -429,6 +453,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.atan(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -438,6 +463,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.atan(1 / this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -447,6 +473,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.acos(1 / this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -456,6 +483,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.asin(1 / this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -465,6 +493,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.sinh(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -474,6 +503,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.cosh(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -483,6 +513,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.tanh(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -492,6 +523,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = 1 / Math.tanh(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -501,6 +533,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = 1 / Math.sinh(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -510,6 +543,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = 1 / Math.cosh(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -519,6 +553,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.asinh(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -528,6 +563,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.acosh(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -537,6 +573,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.atanh(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -546,6 +583,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.atanh(1 / this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -555,6 +593,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.acosh(1 / this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -564,6 +603,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.asinh(1 / this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -573,6 +613,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.log(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -582,6 +623,7 @@ export class PhysicsVariable {
       throw new UnitsMismatchError()
     }
     let result = Math.log10(this.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 
@@ -595,6 +637,7 @@ export class PhysicsVariable {
     }
 
     let result = Math.log(this.value) / Math.log(b.value)
+    result = this.SanitizeFunctionValue(result)
     return PhysicsVariable.makeConstant(result)
   }
 

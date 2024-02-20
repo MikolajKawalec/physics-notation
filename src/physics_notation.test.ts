@@ -525,3 +525,382 @@ test('sin(3.14/6) / cos(3.14/3)', () => {
   let pvResult = pe.calculate()
   expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(1, 2)
 })
+
+test('tan(PI/2)', () => {
+  let str = 'tan(a)'
+
+  let a = new EquationMember('a')
+  a.makeConstant(Math.PI /2 )
+
+  //let b = new EquationMember('b')
+  //b.makeConstant(Math.PI / 3)
+
+  let variables = [a]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(1, 2)
+})
+
+test('cot(0)', () => {
+  let str = 'cot(a)'
+
+  let a = new EquationMember('a')
+  a.makeConstant(0 )
+
+  //let b = new EquationMember('b')
+  //b.makeConstant(Math.PI / 3)
+
+  let variables = [a]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(1, 2)
+})
+test('cot(0) * Log(0)', () => {
+  let str = 'cot(a)*log(b)'
+
+  let a = new EquationMember('a')
+  a.makeConstant(0 )
+
+  let b = new EquationMember('b')
+  b.makeConstant(0)
+
+  let variables = [a, b]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(1, 2)
+})
+
+test('a^2', () => {
+  let str = 'a^2'
+
+  let a = new EquationMember('a')
+  a.makeConstant(6)
+
+  //let b = new EquationMember('b')
+  //b.makeConstant(Math.PI / 3)
+
+  let variables = [a]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(36, 2)
+})
+
+test('sin(a)^2', () => {
+  let str = '(sin(a))^2'
+
+  let a = new EquationMember('a')
+  a.makeConstant(Math.PI / 6)
+
+  //let b = new EquationMember('b')
+  //b.makeConstant(Math.PI / 3)
+
+  let variables = [a]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(0.25, 2)
+})
+test('sin(a)^2+cos(a)^2 trigonometric unit ', () => {
+  let str = '(sin(a))^2+(cos(a))^2'
+
+  let a = new EquationMember('a')
+  a.makeConstant(Math.PI / 6)
+
+  //let b = new EquationMember('b')
+  //b.makeConstant(Math.PI / 3)
+
+  let variables = [a]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(1, 2)
+})
+
+test('sin(a)^2+cos(a)^2 trigonometric unit ', () => {
+  let str = '(sin(a))*(sin(a))+(cos(a))*(cos(a))'
+
+  let a = new EquationMember('a')
+  a.makeConstant(Math.PI / 6)
+
+  //let b = new EquationMember('b')
+  //b.makeConstant(Math.PI / 3)
+
+  let variables = [a]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(1, 2)
+})
+test('tan(a)-(sin(a))/(cos(a))', () => {
+  let str = 'tan(a)-(sin(a))/(cos(a))'
+
+  let a = new EquationMember('a')
+  a.makeConstant(Math.PI / 6)
+
+  //let b = new EquationMember('b')
+  //b.makeConstant(Math.PI / 3)
+
+  let variables = [a]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(0, 2)
+})
+test('a/b', () => {
+  let str = 'a/b'
+
+  let a = new EquationMember('a')
+  a.makeConstant(6)
+
+  let b = new EquationMember('b')
+  b.makeConstant(3)
+
+  let variables = [a, b]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(2, 2)
+})
+test('(a)^2', () => {
+  let str = '(a)^2'
+
+  let a = new EquationMember('a')
+  a.makeConstant(5)
+
+  //let b = new EquationMember('b')
+  //b.makeConstant(Math.PI / 3)
+
+  let variables = [a]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(25, 2)
+})
+test('a^two+b^two', () => {
+  let str = 'a^two+b^two'
+
+  let a = new EquationMember('a')
+  a.makeConstant(3)
+
+  let b = new EquationMember('b')
+  b.makeConstant(4)
+
+  
+  let two = new EquationMember('two')
+  two.makeConstant(2)
+
+  let variables = [a, b, two]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(25, 2)
+})
+
+test('3^two', () => {
+  let str = '3^two'
+
+ let two = new EquationMember('two')
+  two.makeConstant(2)
+
+  let variables = [two]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(9, 2)
+})
+
+test('3*x', () => {
+  let str = '3*x'
+
+ let x = new EquationMember('x')
+  x.makeConstant(2)
+
+  let variables = [x]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(6, 2)
+})
+test('x/4', () => {
+  let str = 'x/4'
+
+ let x = new EquationMember('x')
+  x.makeConstant(2)
+
+  let variables = [x]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(0.5, 2)
+})
+
+test('a^two+b^two', () => {
+  let str = 'a^two+b^two'
+
+  let a = new EquationMember('a')
+  a.makeConstant(-3)
+
+  let b = new EquationMember('b')
+  b.makeConstant(-4)
+
+  
+  let two = new EquationMember('two')
+  two.makeConstant(2)
+
+  let variables = [a, b, two]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(25, 2)
+})
+test('a^two+b^two', () => {
+  let str = 'a^two+b^two'
+
+  let a = new EquationMember('a')
+  a.makeConstant(-1)
+
+  let b = new EquationMember('b')
+  b.makeConstant(-2)
+
+  
+  let two = new EquationMember('two')
+  two.makeConstant(3)
+
+  let variables = [a, b, two]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(-9, 2)
+})
+test('a*b*c', () => {
+  let str = 'a*b*c'
+
+  let a = new EquationMember('a')
+  a.makeConstant(2)
+
+  let b = new EquationMember('b')
+  b.makeConstant(3)
+
+  
+  let c = new EquationMember('c')
+  c.makeConstant(4)
+
+  let variables = [a, b, c]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(24, 2)
+})
+test('a*b+c^d', () => {
+  let str = 'a*b+c^d'
+
+  let a = new EquationMember('a')
+  a.makeConstant(2)
+
+  let b = new EquationMember('b')
+  b.makeConstant(3)
+
+  
+  let c = new EquationMember('c')
+  c.makeConstant(4)
+
+  let d = new EquationMember('d')
+  d.makeConstant(2)
+
+  let variables = [a, b, c, d]
+
+  let tokens = tokenize(str)
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()
+  expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(22, 2)
+})
+
+test('bok_a*bok_b*bok_c', () => {
+  let str = 'bok_a*bok_b*bok_c'
+
+   
+  let bok_a = new EquationMember('bok_a')
+  bok_a.fromString('2,0,0,1,0,0,0,0,0')
+
+  let bok_b = new EquationMember('bok_b')
+  bok_b.fromString('4,0,0,1,0,0,0,0,0')
+
+  let bok_c = new EquationMember('bok_c')
+  bok_c.fromString('6,0,0,1,0,0,0,0,0')
+ 
+
+  let variables = [bok_a, bok_b, bok_c]
+
+  let tokens = tokenize(str)
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()   
+  expect(pvResult.toString()).toEqual('48,0,0,3,0,0,0,0,0')
+  expect(pvResult.getValue()).toEqual(48)
+  expect(pvResult.getPrefix()).toEqual(0)
+  expect(pvResult.getUnit()).toMatchObject([0, 3, 0, 0, 0, 0, 0])
+  
+  
+  expect(pvResult.toVerboseString()).toEqual('48m^(3)')  
+  //expect(pvResult.toZeroPrefix().getValue()).toMatchObject([48, 0, 0, 3, 0, 0, 0])
+  //expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(48m^3, 2)
+})  
+ 
+  

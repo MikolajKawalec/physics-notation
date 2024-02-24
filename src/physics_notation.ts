@@ -23,6 +23,11 @@ export function convertUnitStringToUnitArray(unitString: string): Unit<number> {
   ]
 }
 
+/**
+ * Checks if the given unit represents a kilogram.
+ * @param unit The unit to check.
+ * @returns True if the unit represents a kilogram, false otherwise.
+ */
 export function IsKilogram(unit: Unit<number>): boolean {
   let kg = [0, 0, 1, 0, 0, 0, 0]
   let checkUnit = [...unit]
@@ -32,16 +37,22 @@ export function IsKilogram(unit: Unit<number>): boolean {
   return checkUnit.toString() === getEmptyUnit().toString()
 }
 
+/**
+ * Base units used in physics notation.
+ */
 export const Base_Units: Unit<string> = [
   'time(s)',
   'length(m)',
   'mass(kg)',
   'electric current(A)',
-  'thermodynamic temparature(K)',
+  'thermodynamic temperature(K)',
   'amount of substance(mol)',
   'luminous intensity(cd)',
 ]
 
+/**
+ * Array of base SI prefixes.
+ */
 export const Base_SI_Prefixes: Array<string> = [
   's',
   'm',
@@ -52,28 +63,45 @@ export const Base_SI_Prefixes: Array<string> = [
   'cd',
 ]
 
+/**
+ * Error thrown when there is a mismatch between units in a physics operation.
+ */
 export class UnitsMismatchError extends Error {
   constructor() {
     super()
     Object.setPrototypeOf(this, UnitsMismatchError.prototype)
   }
 
+  /**
+   * Get the error message for the UnitsMismatchError.
+   * @returns The error message.
+   */
   getErrorMessage() {
     return 'Something went wrong Cannot perform operation with mismatching units'
   }
 }
 
+/**
+ * Represents an error that occurs when trying to perform an operation with a nonzero unit in the exponent.
+ */
 export class UnitInExponent extends Error {
   constructor() {
     super()
     Object.setPrototypeOf(this, UnitInExponent.prototype)
   }
 
+  /**
+   * Gets the error message for the UnitInExponent error.
+   * @returns The error message.
+   */
   getErrorMessage() {
-    return 'Something went wrong Cannot perform operation with nonzero unit in the exponent'
+    return 'Something went wrong. Cannot perform operation with nonzero unit in the exponent.'
   }
 }
 
+/**
+ * Represents a physics variable.
+ */
 export class PhysicsVariable {
   //TODO add procted attribiute id
 
@@ -81,12 +109,22 @@ export class PhysicsVariable {
   protected prefix: number
   protected unit: Unit<number>
 
+  /**
+   * Constructs a new instance of the PhysicsNotation class.
+   */
   constructor() {
     this.value = 0
     this.prefix = 0
     this.unit = getEmptyUnit()
   }
 
+  /**
+   * Creates a new instance of PhysicsVariable from a string representation.
+   *
+   * @param inStr - The string representation of the PhysicsVariable in format "value,prefix,unit[0],unit[1],unit[2],unit[3],unit[4],unit[5],unit[6],".
+   * @returns A new instance of PhysicsVariable.
+   * @throws Throws an error if the string representation is invalid.
+   */
   public static fromString(inStr: string): PhysicsVariable {
     const pv = new PhysicsVariable()
     try {
@@ -104,6 +142,14 @@ export class PhysicsVariable {
     return pv
   }
 
+  /**
+   * Creates a new instance of PhysicsVariable with the specified values.
+   *
+   * @param value - The numerical value of the physics variable.
+   * @param prefix - The prefix value of the physics variable.
+   * @param unit - The unit of measurement for the physics variable.
+   * @returns A new instance of PhysicsVariable.
+   */
   public static fromValues(
     value: number,
     prefix: number,
@@ -116,6 +162,12 @@ export class PhysicsVariable {
     return pv
   }
 
+  /**
+   * Creates a constant PhysicsVariable with the specified value and no unit(zero unit) and prefix.
+   *
+   * @param value - The value of the constant.
+   * @returns The created PhysicsVariable.
+   */
   public static makeConstant(value: number): PhysicsVariable {
     const pv = new PhysicsVariable()
     pv.setValue(value)
@@ -124,14 +176,28 @@ export class PhysicsVariable {
     return pv
   }
 
+  /**
+   * Sets the value of the object.
+   * @param value - The new value to set.
+   */
   public setValue(value: number): void {
     this.value = value
   }
 
+  /**
+   * Sets the prefix for the physics notation.
+   *
+   * @param prefix - The prefix to set.
+   */
   public setPrefix(prefix: number): void {
     this.prefix = prefix
   }
 
+  /**
+   * Sets the unit for the physics notation.
+   *
+   * @param unit The unit to set.
+   */
   public setUnit(unit: Unit<number>): void {
     this.unit = unit
   }

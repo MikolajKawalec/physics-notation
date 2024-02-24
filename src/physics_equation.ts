@@ -340,6 +340,7 @@ export class PhysicsEquation {
         }
         const o2 = s.pop()
         const o1 = s.pop()
+
         switch (t) {
           case '+':
             try {

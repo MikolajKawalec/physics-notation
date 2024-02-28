@@ -107,6 +107,10 @@ const operatorsStringArray: Array<string> = [
   ...functionsNames,
 ]
 
+export function GetOperatorsStringArray(): Array<string> {
+  return operatorsStringArray
+}
+
 const assert = (predicate: any) => {
   if (predicate) return
   throw new Error('Assertion failed due to invalid token')

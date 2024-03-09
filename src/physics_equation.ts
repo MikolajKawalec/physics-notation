@@ -320,7 +320,7 @@ export class PhysicsEquation {
     return this.equationString
   }
 
-  public get_formula_array(): Array<PhysicsVariable> {
+  public get_formula_array(): Array<EquationMember> {
     return this.variables
   }
 

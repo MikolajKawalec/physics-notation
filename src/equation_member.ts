@@ -28,12 +28,7 @@ export class EquationMember extends PhysicsVariable {
     return
   }
 
-  public fromValues(
-    id: string,
-    value: number,
-    prefix: number,
-    unit: Unit<number>,
-  ): void {
+  public fromValues(value: number, prefix: number, unit: Unit<number>): void {
     this.setValue(value)
     this.setPrefix(prefix)
     this.setUnit(unit)
@@ -44,5 +39,9 @@ export class EquationMember extends PhysicsVariable {
     this.setValue(value)
     this.setPrefix(0)
     this.setUnit(getEmptyUnit())
+  }
+
+  public getID(): string {
+    return this.id
   }
 }

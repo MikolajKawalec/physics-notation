@@ -107,6 +107,10 @@ const operatorsStringArray: Array<string> = [
   ...functionsNames,
 ]
 
+export function GetOperatorsStringArray(): Array<string> {
+  return operatorsStringArray
+}
+
 const assert = (predicate: any) => {
   if (predicate) return
   throw new Error('Assertion failed due to invalid token')
@@ -316,7 +320,7 @@ export class PhysicsEquation {
     return this.equationString
   }
 
-  public get_formula_array(): Array<PhysicsVariable> {
+  public get_formula_array(): Array<EquationMember> {
     return this.variables
   }
 
@@ -340,6 +344,7 @@ export class PhysicsEquation {
         }
         const o2 = s.pop()
         const o1 = s.pop()
+
         switch (t) {
           case '+':
             try {

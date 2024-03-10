@@ -904,3 +904,177 @@ test('bok_a*bok_b*bok_c', () => {
 })  
  
   
+test('velocity_1/velocity_2', () => {
+  let str = 'velocity_1/velocity_2'
+
+   
+  let velocity_1 = new EquationMember('velocity_1')
+  velocity_1.fromString('0.5,3,-1,1,0,0,0,0,0')
+
+  let velocity_2 = new EquationMember('velocity_2')
+  velocity_2.fromString('5,0,-1,1,0,0,0,0,0')
+
+
+   let variables = [velocity_1, velocity_2]
+
+  let tokens = tokenize(str)
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()   
+  expect(pvResult.toString()).toEqual('48,0,0,3,0,0,0,0,0')
+  expect(pvResult.getValue()).toEqual(48)
+  expect(pvResult.getPrefix()).toEqual(0)
+  expect(pvResult.getUnit()).toMatchObject([0, 3, 0, 0, 0, 0, 0])
+  
+  
+  expect(pvResult.toVerboseString()).toEqual('100')  
+  //expect(pvResult.toZeroPrefix().getValue()).toMatchObject([48, 0, 0, 3, 0, 0, 0])
+  //expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(48m^3, 2)
+})  
+
+test('kg+g', () => {
+  let str = 'mass_1+mass_2'
+
+   
+  let mass_1 = new EquationMember('mass_1')
+  mass_1.fromString('5.0,3,0,0,1,0,0,0,0')
+
+  let mass_2 = new EquationMember('mass_2')
+  mass_2.fromString('5,0,0,0,1,0,0,0,0')
+
+
+   let variables = [mass_1, mass_2]
+
+  let tokens = tokenize(str)
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+
+  let mass_simpleAdd: PhysicsVariable = mass_1.Add(mass_2);
+  expect(mass_simpleAdd.getValue()).toEqual(5.005)
+
+  let pvResult = pe.calculate()   
+  expect(pvResult.toString()).toEqual('5.005,3,0,0,1,0,0,0,0')
+  expect(pvResult.getValue()).toEqual(5.005)
+  expect(pvResult.getPrefix()).toEqual(3)
+  expect(pvResult.getUnit()).toMatchObject([0, 0, 1, 0, 0, 0, 0])
+  
+  
+  //expect(pvResult.toVerboseString()).toEqual('5.005 kg')  
+  //expect(pvResult.toZeroPrefix().getValue()).toMatchObject([48, 0, 0, 3, 0, 0, 0])
+  //expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(48m^3, 2)
+})  
+
+test('kg/g', () => {
+  let str = 'mass_1/mass_2'
+
+   
+  let mass_1 = new EquationMember('mass_1')
+  mass_1.fromString('5,3,0,0,1,0,0,0,0')
+
+  let mass_2 = new EquationMember('mass_2')
+  mass_2.fromString('5,0,0,0,1,0,0,0,0')
+
+
+   let variables = [mass_1, mass_2]
+
+  let tokens = tokenize(str)
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()   
+  expect(pvResult.toString()).toEqual('1000,0,0,0,0,0,0,0,0')
+  expect(pvResult.getValue()).toEqual(1000)
+  expect(pvResult.getPrefix()).toEqual(0)
+  expect(pvResult.getUnit()).toMatchObject([0, 0, 0, 0, 0, 0, 0])
+  
+  
+  expect(pvResult.toVerboseString()).toEqual('1000')  
+  //expect(pvResult.toZeroPrefix().getValue()).toMatchObject([48, 0, 0, 3, 0, 0, 0])
+  //expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(48m^3, 2)
+})  
+
+test('kg*g', () => {
+  let str = 'mass_1*mass_2'
+
+   
+  let mass_1 = new EquationMember('mass_1')
+  mass_1.fromString('2.0,3,0,0,1,0,0,0,0')
+
+  let mass_2 = new EquationMember('mass_2')
+  mass_2.fromString('2,0,0,0,1,0,0,0,0')
+
+
+   let variables = [mass_1, mass_2]
+
+  let tokens = tokenize(str)
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()   
+  expect(pvResult.toString()).toEqual('0.004,3,0,0,2,0,0,0')
+  expect(pvResult.getValue()).toEqual(48)
+  expect(pvResult.getPrefix()).toEqual(0)
+  expect(pvResult.getUnit()).toMatchObject([0, 0, 1, 0, 0, 0, 0])
+  
+  
+  expect(pvResult.toVerboseString()).toEqual('4')  
+  //expect(pvResult.toZeroPrefix().getValue()).toMatchObject([48, 0, 0, 3, 0, 0, 0])
+  //expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(48m^3, 2)
+})  
+
+
+
+test('g*kg', () => {
+  let str = 'mass_1*mass_2'
+
+   
+  let mass_1 = new EquationMember('mass_1')
+  mass_1.fromString('2.0,0,0,0,1,0,0,0,0')
+
+  let mass_2 = new EquationMember('mass_2')
+  mass_2.fromString('2.0,3,0,0,1,0,0,0,0')
+
+
+   let variables = [mass_1, mass_2]
+
+  let tokens = tokenize(str)
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()   
+  expect(pvResult.toString()).toEqual('0.004,3,0,0,2,0,0,0')
+  expect(pvResult.getValue()).toEqual(0.004)
+  expect(pvResult.getPrefix()).toEqual(0)
+  expect(pvResult.getUnit()).toMatchObject([0, 0, 1, 0, 0, 0, 0])
+  
+  
+  expect(pvResult.toVerboseString()).toEqual('4')  
+  //expect(pvResult.toZeroPrefix().getValue()).toMatchObject([48, 0, 0, 3, 0, 0, 0])
+  //expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(48m^3, 2)
+})
+
+
+test('velocity_1*velocity_2', () => {
+  let str = 'velocity_1*velocity_2'
+
+   
+  let velocity_1 = new EquationMember('velocity_1')
+  velocity_1.fromString('2,3,-1,1,0,0,0,0,0')
+
+  let velocity_2 = new EquationMember('velocity_2')
+  velocity_2.fromString('5,0,-1,1,0,0,0,0,0')
+
+
+   let variables = [velocity_1, velocity_2]
+
+  let tokens = tokenize(str)
+  let pe = PhysicsEquation.fromString(str, variables)
+  //expect(infixToPostfix(tokens)).toEqual('half mass * velocity two ^ *')
+  let pvResult = pe.calculate()   
+  expect(pvResult.toString()).toEqual('10,0,0,3,0,0,0,0,0')
+  expect(pvResult.getValue()).toEqual(10)
+  expect(pvResult.getPrefix()).toEqual(0)
+  expect(pvResult.getUnit()).toMatchObject([0, 3, 0, 0, 0, 0, 0])
+  
+  
+  expect(pvResult.toVerboseString()).toEqual('100')  
+  //expect(pvResult.toZeroPrefix().getValue()).toMatchObject([48, 0, 0, 3, 0, 0, 0])
+  //expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(48m^3, 2)
+})  

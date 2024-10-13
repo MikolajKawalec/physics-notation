@@ -358,7 +358,7 @@ export class PhysicsEquation {
             break
           case '-':
             try {
-              s.push(o1.Substract(o2))
+              s.push(o1.Subtract(o2))
             } catch (error) {
               if (error instanceof UnitsMismatchError) {
                 throw UnitsMismatchError

@@ -99,13 +99,13 @@ test('Add 1J to 1kJ', () => {
 test('Subtract one 1J from 1J', () => {
   let pv1 = PhysicsVariable.fromString('1,0,-2,2,1,0,0,0,0')
   let pv2 = PhysicsVariable.fromString('1,0,-2,2,1,0,0,0,0')
-  expect(pv1.Substract(pv2).toVerboseString()).toEqual('0J')
+  expect(pv1.Subtract(pv2).toVerboseString()).toEqual('0J')
 })
 
 test('Substract 1J from 1kJ', () => {
   let pv1 = PhysicsVariable.fromString('1,3,-2,2,1,0,0,0,0')
   let pv2 = PhysicsVariable.fromString('1,0,-2,2,1,0,0,0,0')
-  expect(pv1.Substract(pv2).toVerboseString()).toEqual('0.999kJ')
+  expect(pv1.Subtract(pv2).toVerboseString()).toEqual('0.999kJ')
 })
 
 test('SIN 30 but in radians', () => {
@@ -120,7 +120,7 @@ test('Substract 1kJ from 1J', () => {
   //1kJ
   let pv2 = PhysicsVariable.fromString('1,3,-2,2,1,0,0,0,0')
   //1J-1kJ=-999J
-  expect(pv1.Substract(pv2).toVerboseString()).toEqual('-999J')
+  expect(pv1.Subtract(pv2).toVerboseString()).toEqual('-999J')
 })
 
 test('Multiple 1A 1s = 1C', () => {
@@ -905,4 +905,17 @@ test('bok_a*bok_b*bok_c', () => {
   expect(pvResult.toVerboseString()).toEqual('48m^(3)')
   //expect(pvResult.toZeroPrefix().getValue()).toMatchObject([48, 0, 0, 3, 0, 0, 0])
   //expect(pvResult.toZeroPrefix().getValue()).toBeCloseTo(48m^3, 2)
+})
+
+test('3*20kg', () => {
+  let str = '3*a'
+  let a = new EquationMember('a')
+  a.fromString('20,0,0,1,0,0,0,0,0')
+  let three = new EquationMember('3')
+  three.makeConstant(3)
+  let variables = [three, a]
+
+  let pe = PhysicsEquation.fromString(str, variables)
+  let pvResult = pe.calculate()
+  expect(pvResult.toString()).toEqual('60,0,0,1,0,0,0,0,0')
 })

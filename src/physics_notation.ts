@@ -320,7 +320,7 @@ export class PhysicsVariable {
     )
   }
 
-  public Substract(b: PhysicsVariable): PhysicsVariable {
+  public Subtract(b: PhysicsVariable): PhysicsVariable {
     //typechecks first
     if (this.getUnitString() !== b.getUnitString()) {
       throw new UnitsMismatchError()
